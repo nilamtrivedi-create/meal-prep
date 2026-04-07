@@ -1727,9 +1727,7 @@ def main():
                 ["git", "commit", "-m", f"Meal prep {meta['date']}: {meta['title'][:60]}"],
                 cwd=SCRIPT_DIR, check=True
             )
-            token = subprocess.run(["gh", "auth", "token"], capture_output=True, text=True).stdout.strip()
-            env = {**os.environ, "GIT_ASKPASS": "echo", "GIT_USERNAME": "nilamtrivedi-create", "GIT_PASSWORD": token}
-            subprocess.run(["git", "push"], cwd=SCRIPT_DIR, check=True, env=env)
+            subprocess.run(["git", "push"], cwd=SCRIPT_DIR, check=True)
             notify("Meal prep site live on GitHub Pages!")
             print("  ✓ Deployed — site is live.")
         else:
