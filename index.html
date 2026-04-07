@@ -1,0 +1,1722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Restaurant Dropout — 2026-04-03</title>
+  <style>
+    :root {
+      --cream:#faf6f0;--warm-white:#fff8f2;--sage:#7a9e7e;--sage-light:#d4e6d5;
+      --charcoal:#2c2c2c;--muted:#6b6560;--border:#e8e0d8;--accent:#c16b3a;--accent-light:#f5e8df;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Georgia',serif;background:var(--cream);color:var(--charcoal);font-size:16px;line-height:1.65}
+    header{background:var(--charcoal);color:#fff;padding:28px 24px 24px;text-align:center}
+    header .week-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#bbb;margin-bottom:6px}
+    header h1{font-size:clamp(22px,4vw,36px);font-weight:normal;line-height:1.2}
+    header .subtitle{margin-top:8px;font-size:14px;color:#bbb;font-style:italic}
+    header .post-link{display:inline-block;margin-top:14px;font-size:12px;color:#bbb;text-decoration:none;border-bottom:1px solid #666;padding-bottom:1px;letter-spacing:1px}
+    header .post-link:hover{color:#fff;border-color:#fff}
+    nav{background:var(--warm-white);border-bottom:2px solid var(--border);position:sticky;top:0;z-index:100;overflow-x:auto;white-space:nowrap}
+    nav::-webkit-scrollbar{height:3px} nav::-webkit-scrollbar-thumb{background:var(--border)}
+    nav ul{display:inline-flex;list-style:none;padding:0 16px}
+    nav ul li a{display:block;padding:14px 18px;text-decoration:none;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .2s,border-color .2s}
+    nav ul li a:hover{color:var(--charcoal)}
+    nav ul li a.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:bold}
+    .section{display:none;max-width:960px;margin:0 auto;padding:32px 20px 60px}
+    .section.active{display:block}
+    .overview-intro{font-size:17px;line-height:1.75;max-width:680px;margin-bottom:32px}
+    .week-menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0;margin-bottom:32px}
+    .day-card{background:var(--warm-white);border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s;display:flex;flex-direction:column}
+    .day-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.1);z-index:1;position:relative}
+    .day-card-img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:var(--border)}
+    .day-card-body{padding:16px 18px 20px;flex:1}
+    .day-card .day-num{font-size:22px;font-weight:normal;margin-bottom:4px;line-height:1}
+    .day-card h3{font-size:15px;font-weight:bold;line-height:1.25;margin-bottom:3px}
+    .day-card .day-sub{font-size:13px;color:var(--muted);font-style:italic}
+    .notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-top:32px}
+    .note-box{background:var(--warm-white);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+    .note-box h4{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+    .note-box p{font-size:14px;color:var(--muted);line-height:1.6}
+    .section-header{margin-bottom:24px}
+    .section-header h2{font-size:26px;font-weight:normal}
+    .section-header p{font-size:14px;color:var(--muted);margin-top:4px;font-style:italic}
+    .recipe-filter{background:var(--warm-white);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:24px}
+    .recipe-filter h3{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+    .filter-toggles{display:flex;flex-wrap:wrap;gap:10px}
+    .filter-toggle{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:24px;border:2px solid var(--border);cursor:pointer;background:var(--cream);transition:all .15s;user-select:none}
+    .filter-toggle input{display:none}
+    .filter-toggle.selected{border-color:currentColor;background:#fff}
+    .filter-toggle[data-day="1"]{color:#7a9e7e}.filter-toggle[data-day="2"]{color:#c16b3a}
+    .filter-toggle[data-day="3"]{color:#8b6f4e}.filter-toggle[data-day="4"]{color:#6b8fad}
+    .filter-toggle[data-day="5"]{color:#9b7fb5}
+    .filter-toggle .ft-day{font-size:13px;font-weight:bold}
+    .filter-toggle .ft-name{font-size:11px;color:var(--muted)}
+    .filter-toggle.selected .ft-name{color:inherit;opacity:.7}
+    .filter-all-btn{font-size:12px;color:var(--muted);text-decoration:underline;cursor:pointer;background:none;border:none;margin-top:10px}
+    .grocery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin-bottom:28px}
+    .grocery-category{background:var(--warm-white);border:1px solid var(--border);border-radius:10px;padding:20px}
+    .grocery-category h3{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .grocery-category ul{list-style:none}
+    .grocery-item{display:grid;grid-template-columns:20px 1fr auto;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid #f0ece6;transition:opacity .2s}
+    .grocery-item:last-child{border-bottom:none}
+    .grocery-item.hidden{display:none}
+    .grocery-item input[type=checkbox]{margin-top:3px;width:16px;height:16px;accent-color:var(--sage);cursor:pointer}
+    .grocery-item-label{cursor:pointer}
+    .grocery-item-label.checked{text-decoration:line-through;color:#bbb}
+    .grocery-item-name{font-size:14px;line-height:1.35}
+    .grocery-item-convert{font-size:11px;text-align:right;line-height:1.3}
+    .qty-main{font-size:13px;font-weight:bold;color:var(--charcoal)}
+    .qty-metric{font-size:13px;font-weight:bold;color:var(--sage);margin-top:2px;letter-spacing:.3px}
+    .meal-tags{font-size:10px;color:#bbb;display:block;margin-top:1px}
+    .prep-timeline{max-width:680px}
+    .prep-block{margin-bottom:28px;padding-left:24px;border-left:3px solid var(--sage-light);position:relative}
+    .prep-block::before{content:'';position:absolute;left:-8px;top:4px;width:13px;height:13px;border-radius:50%;background:var(--sage);border:2px solid var(--cream)}
+    .prep-block h3{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+    .time-badge{font-size:11px;background:var(--sage-light);color:var(--sage);padding:2px 8px;border-radius:20px;letter-spacing:0;text-transform:none}
+    .prep-items{list-style:none}
+    .prep-items li{display:flex;align-items:flex-start;gap:10px;padding:8px 0;font-size:14px;border-bottom:1px solid var(--border)}
+    .prep-items li:last-child{border-bottom:none}
+    .prep-items li input[type=checkbox]{margin-top:3px;flex-shrink:0;width:16px;height:16px;accent-color:var(--sage);cursor:pointer}
+    .prep-items li label{cursor:pointer;line-height:1.5}
+    .prep-items li label.checked{text-decoration:line-through;color:#bbb}
+    .break-divider{text-align:center;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:24px 0;display:flex;align-items:center;gap:12px}
+    .break-divider::before,.break-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+    .recipe-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+    .recipe-tab{padding:10px 16px;border-radius:10px;border:1px solid var(--border);background:var(--warm-white);cursor:pointer;transition:all .15s;text-align:left;min-width:110px}
+    .recipe-tab:hover{border-color:#bbb}
+    .recipe-tab.active{background:var(--charcoal);color:#fff;border-color:var(--charcoal)}
+    .recipe-tab.sauce-tab.active{background:var(--sage);border-color:var(--sage)}
+    .recipe-tab .rt-day{font-size:13px;font-weight:bold;letter-spacing:1px;display:block;color:inherit}
+    .recipe-tab .rt-name{font-size:10px;display:block;margin-top:2px;line-height:1.3;opacity:.65}
+    .recipe-tab[data-recipe="day1"]:not(.active) .rt-day{color:#7a9e7e}
+    .recipe-tab[data-recipe="day2"]:not(.active) .rt-day{color:#c16b3a}
+    .recipe-tab[data-recipe="day3"]:not(.active) .rt-day{color:#8b6f4e}
+    .recipe-tab[data-recipe="day4"]:not(.active) .rt-day{color:#6b8fad}
+    .recipe-tab[data-recipe="day5"]:not(.active) .rt-day{color:#9b7fb5}
+    .recipe-tab[data-recipe="sauces"]:not(.active) .rt-day{color:var(--sage)}
+    .recipe-panel{display:none}.recipe-panel.active{display:block}
+    .recipe-header{margin-bottom:28px}
+    .recipe-header .recipe-day-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-bottom:6px}
+    .recipe-header h2{font-size:clamp(20px,3vw,30px);font-weight:normal;line-height:1.2}
+    .recipe-header .recipe-sub{font-size:16px;color:var(--muted);font-style:italic;margin-top:4px}
+    .recipe-header .servings{margin-top:10px;font-size:13px;color:var(--muted);letter-spacing:1px}
+    .recipe-body{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
+    @media(max-width:640px){.recipe-body{grid-template-columns:1fr}}
+    .ingredients-col h3,.instructions-col h3{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .ingredients-col ul{list-style:none}
+    .ingredients-col ul li{padding:6px 0;font-size:14px;border-bottom:1px solid #f0ece6;line-height:1.4}
+    .ingredients-col ul li:last-child{border-bottom:none}
+    .ingredients-col ul li.section-break{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage);margin-top:12px;border-bottom:none}
+    .ingr-metric{font-size:12px;font-weight:bold;color:var(--sage);margin-left:6px;white-space:nowrap}
+    .instructions-col ol{list-style:none;counter-reset:steps}
+    .instructions-col ol li{counter-increment:steps;padding:10px 0 10px 36px;font-size:14px;line-height:1.6;border-bottom:1px solid #f0ece6;position:relative}
+    .instructions-col ol li:last-child{border-bottom:none}
+    .instructions-col ol li::before{content:counter(steps);position:absolute;left:0;top:12px;width:24px;height:24px;border-radius:50%;background:var(--charcoal);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center}
+    .recipe-note{margin-top:20px;padding:14px 16px;background:var(--accent-light);border-radius:8px;font-size:13px;line-height:1.6}
+    .recipe-note strong{display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+    .sauce-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:24px}
+    @media(max-width:480px){.sauce-grid{grid-template-columns:1fr}}
+    .sauce-card{background:var(--warm-white);border:1px solid var(--border);border-radius:10px;padding:22px}
+    .sauce-card h3{font-size:16px;font-weight:normal;margin-bottom:4px}
+    .sauce-card .yield{font-size:12px;color:var(--muted);margin-bottom:16px;font-style:italic}
+    .sauce-two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    @media(max-width:480px){.sauce-two-col{grid-template-columns:1fr}}
+    .sauce-card h4{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--sage);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+    .sauce-card ul{list-style:none}
+    .sauce-card ul li{font-size:13px;padding:4px 0;border-bottom:1px solid #f0ece6;line-height:1.4}
+    .sauce-card ul li:last-child{border-bottom:none}
+    .sauce-card ol{list-style:none;counter-reset:steps}
+    .sauce-card ol li{counter-increment:steps;font-size:13px;padding:6px 0 6px 28px;border-bottom:1px solid #f0ece6;position:relative;line-height:1.5}
+    .sauce-card ol li:last-child{border-bottom:none}
+    .sauce-card ol li::before{content:counter(steps);position:absolute;left:0;top:8px;width:18px;height:18px;border-radius:50%;background:var(--sage);color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center}
+    .recipe-header-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+    .recipe-actions{display:flex;gap:8px;flex-shrink:0;margin-top:4px}
+    .save-cookbook-btn{font-size:12px;padding:7px 14px;border-radius:20px;border:1.5px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer;letter-spacing:.5px;transition:all .15s;white-space:nowrap}
+    .save-cookbook-btn:hover{background:var(--accent);color:#fff}
+    .save-cookbook-btn.saved{background:var(--sage);border-color:var(--sage);color:#fff;cursor:default}
+    .cb-toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:24px}
+    .cb-search{flex:1;min-width:180px;padding:9px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;background:var(--warm-white)}
+    .cb-search:focus{outline:none;border-color:var(--sage)}
+    .cb-filter-btns{display:flex;gap:6px}
+    .cb-filter-btn{padding:8px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--warm-white);font-size:12px;letter-spacing:.5px;cursor:pointer;transition:all .15s}
+    .cb-filter-btn.active{border-color:var(--charcoal);background:var(--charcoal);color:#fff}
+    .cb-new-btn{padding:9px 18px;border-radius:8px;border:none;background:var(--accent);color:#fff;font-size:13px;cursor:pointer;letter-spacing:.5px;white-space:nowrap}
+    .cb-new-btn:hover{opacity:.88}
+    .cb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;margin-bottom:40px}
+    .cb-empty{padding:48px 20px;text-align:center;color:var(--muted);font-size:15px;line-height:1.7;grid-column:1/-1}
+    .cb-card{background:var(--warm-white);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+    .cb-card.cb-starred{border-color:#f0c040;box-shadow:0 0 0 2px #f0c04033}
+    .cb-card-top{padding:16px 16px 0}
+    .cb-card-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+    .cb-week-badge{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;background:var(--accent-light);color:var(--accent);padding:3px 8px;border-radius:20px}
+    .cb-made-badge{font-size:10px;background:var(--sage-light);color:var(--sage);padding:3px 8px;border-radius:20px;letter-spacing:.5px}
+    .cb-last-made{font-size:10px;color:var(--muted)}
+    .cb-card-btns{display:flex;gap:6px;align-items:center;margin-left:auto}
+    .cb-star{background:none;border:none;font-size:20px;cursor:pointer;color:#ccc;line-height:1;padding:0 2px;transition:color .15s}
+    .cb-star.on{color:#f0c040}
+    .cb-log-btn-sm{font-size:11px;padding:4px 10px;border-radius:14px;border:1.5px solid var(--sage);color:var(--sage);background:none;cursor:pointer;white-space:nowrap}
+    .cb-log-btn-sm:hover{background:var(--sage);color:#fff}
+    .cb-remove{background:none;border:none;font-size:16px;color:#ccc;cursor:pointer;padding:0 2px;line-height:1}
+    .cb-remove:hover{color:#c00}
+    .cb-card-title{font-size:17px;font-weight:normal;padding:0 16px 2px}
+    .cb-card-sub{font-size:13px;color:var(--muted);font-style:italic;padding:0 16px 10px}
+    .cb-details{margin:0 16px 0;border-top:1px solid var(--border)}
+    .cb-details summary{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:10px 0;cursor:pointer;user-select:none}
+    .cb-details summary:hover{color:var(--charcoal)}
+    .cb-recipe-body{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:10px 0 12px}
+    @media(max-width:500px){.cb-recipe-body{grid-template-columns:1fr}}
+    .cb-recipe-body h4{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+    .cb-recipe-body ul{list-style:none}
+    .cb-recipe-body ul li,.cb-recipe-body ol li{font-size:12px;padding:3px 0;border-bottom:1px solid #f0ece6;line-height:1.4}
+    .cb-recipe-body ul li:last-child,.cb-recipe-body ol li:last-child{border-bottom:none}
+    .cb-recipe-body ol{padding-left:18px;font-size:12px}
+    .cb-copy-btn{font-size:10px;padding:3px 8px;border-radius:10px;border:1px solid var(--border);background:var(--cream);cursor:pointer;float:right;margin-top:-2px}
+    .cb-copy-btn:hover{background:var(--sage-light)}
+    .cb-substack-link{font-size:12px;color:var(--muted);text-decoration:none;padding:10px 16px;display:block;border-top:1px solid var(--border);letter-spacing:.3px}
+    .cb-substack-link:hover{color:var(--accent)}
+    .cb-log-inline{padding:12px 16px;background:var(--cream);border-top:1px solid var(--border)}
+    .cb-log-inline-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .cb-log-inline-hdr h4{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+    .cb-log-item{border-bottom:1px solid var(--border);padding:8px 0}
+    .cb-log-item:last-child{border-bottom:none}
+    .cb-log-item-hdr{display:flex;gap:8px;align-items:center;margin-bottom:4px}
+    .cb-log-date{font-size:11px;color:var(--muted)}
+    .cb-log-rating{font-size:13px;color:#f0c040;letter-spacing:-1px}
+    .cb-log-del{background:none;border:none;color:#ccc;cursor:pointer;font-size:13px;margin-left:auto;padding:0}
+    .cb-log-del:hover{color:#c00}
+    .cb-log-notes{font-size:13px;line-height:1.5;color:var(--charcoal)}
+    .cb-divider{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);text-align:center;padding:16px 0 20px;display:flex;align-items:center;gap:12px}
+    .cb-divider::before,.cb-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+    .cb-log-section{margin-top:8px}
+    .cb-log-section h3{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+    .cb-log-entry{background:var(--warm-white);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:12px}
+    .cb-log-entry.manual{border-left:3px solid var(--accent)}
+    .cb-log-entry-hdr{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+    .cb-entry-title{font-size:15px;font-weight:bold}
+    .cb-manual-tag{font-size:10px;letter-spacing:1px;background:var(--accent-light);color:var(--accent);padding:2px 7px;border-radius:10px;text-transform:uppercase}
+    .cb-log-entry-notes{font-size:14px;line-height:1.6;color:var(--charcoal);margin-bottom:10px}
+    .cb-manual-text{font-size:13px;line-height:1.6;white-space:pre-wrap;background:var(--cream);padding:10px 12px;border-radius:6px;margin-top:6px}
+    .cb-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center;padding:16px}
+    .cb-modal{background:#fff;border-radius:14px;width:100%;max-width:540px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+    .cb-modal-hdr{display:flex;justify-content:space-between;align-items:center;padding:20px 22px 16px;border-bottom:1px solid var(--border)}
+    .cb-modal-hdr h3{font-size:16px;font-weight:normal}
+    .cb-modal-close{background:none;border:none;font-size:22px;color:var(--muted);cursor:pointer;line-height:1}
+    .cb-modal-body{padding:20px 22px 24px}
+    .cb-type-toggle{display:flex;gap:0;margin-bottom:20px;border:1.5px solid var(--border);border-radius:8px;overflow:hidden}
+    .cb-type-btn{flex:1;padding:9px;font-size:13px;border:none;background:transparent;cursor:pointer;transition:all .15s;font-family:inherit}
+    .cb-type-btn.active{background:var(--charcoal);color:#fff}
+    .cb-form-group{margin-bottom:16px}
+    .cb-form-group label{display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+    .cb-form-group input,.cb-form-group select,.cb-form-group textarea{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;background:var(--cream)}
+    .cb-form-group input:focus,.cb-form-group select:focus,.cb-form-group textarea:focus{outline:none;border-color:var(--sage)}
+    .cb-form-group textarea{min-height:80px;resize:vertical}
+    .cb-rating-row{display:flex;gap:4px;font-size:26px;cursor:pointer}
+    .cb-rating-star{color:#ddd;transition:color .1s;line-height:1}
+    .cb-rating-star.lit{color:#f0c040}
+    .cb-modal-footer{display:flex;gap:10px;justify-content:flex-end;padding-top:8px}
+    .cb-btn-cancel{padding:9px 18px;border-radius:8px;border:1.5px solid var(--border);background:transparent;font-size:13px;cursor:pointer;font-family:inherit}
+    .cb-btn-save{padding:9px 20px;border-radius:8px;border:none;background:var(--accent);color:#fff;font-size:13px;cursor:pointer;font-family:inherit}
+    .cb-btn-save:hover{opacity:.88}
+    .cb-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--charcoal);color:#fff;padding:11px 22px;border-radius:24px;font-size:13px;letter-spacing:.3px;z-index:600;transition:transform .3s ease,opacity .3s ease;opacity:0;pointer-events:none}
+    .cb-toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+    .last-updated{font-size:11px;color:var(--muted);letter-spacing:1px;text-align:center;padding:10px;margin-bottom:-20px}
+    footer{text-align:center;padding:24px;font-size:12px;color:var(--muted);border-top:1px solid var(--border)}
+    footer a{color:var(--accent);text-decoration:none}
+  </style>
+</head>
+<body>
+
+<div id="pw-gate" style="position:fixed;inset:0;background:var(--charcoal);z-index:9999;display:flex;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:14px;padding:44px 36px;max-width:340px;width:90%;text-align:center;font-family:'Georgia',serif">
+    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#bbb;margin-bottom:10px">Restaurant Dropout</div>
+    <h2 style="font-size:26px;font-weight:normal;margin-bottom:6px">Meal Prep</h2>
+    <p style="font-size:13px;color:#6b6560;margin-bottom:28px;font-style:italic">Enter the password to continue</p>
+    <input type="password" id="pw-input" placeholder="Password" autofocus
+      style="width:100%;padding:12px;border:1.5px solid #e8e0d8;border-radius:8px;font-size:16px;font-family:'Georgia',serif;text-align:center;margin-bottom:12px;box-sizing:border-box"
+      onkeydown="if(event.key==='Enter')checkPw()">
+    <button onclick="checkPw()"
+      style="width:100%;padding:12px;background:#2c2c2c;color:#fff;border:none;border-radius:8px;font-size:14px;cursor:pointer;font-family:'Georgia',serif;letter-spacing:.5px">
+      Enter
+    </button>
+    <p id="pw-err" style="color:#c16b3a;font-size:13px;margin-top:12px;display:none">Incorrect password — try again</p>
+  </div>
+</div>
+<script>
+(function(){
+  if(localStorage.getItem('rd-auth')==='ok'){
+    document.getElementById('pw-gate').style.display='none';
+  }
+})();
+function checkPw(){
+  if(document.getElementById('pw-input').value==='nilam'){
+    localStorage.setItem('rd-auth','ok');
+    document.getElementById('pw-gate').style.display='none';
+  } else {
+    document.getElementById('pw-err').style.display='block';
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-input').focus();
+  }
+}
+</script>
+
+<header>
+  <div class="week-label">Restaurant Dropout &bull; 2026-04-03</div>
+  <h1>Food That Screams Herbaceous &amp; Bright</h1>
+  <div class="subtitle">A flashback menu to get you in the mood for spring; featuring Ranch Cutlets, Crème Fraîche Potatoes, &amp; more</div>
+  <a class="post-link" href="https://restaurantdropout.substack.com/p/food-that-screams-herbaceous-and-d6e" target="_blank">View on Substack &rarr;</a>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="#" class="nav-link active" data-target="overview">Overview</a></li>
+    <li><a href="#" class="nav-link" data-target="grocery">Grocery List</a></li>
+    <li><a href="#" class="nav-link" data-target="prep">Prep List</a></li>
+    <li><a href="#" class="nav-link" data-target="recipes">Recipes</a></li>
+    <li><a href="#" class="nav-link" data-target="cookbook">My Cookbook</a></li>
+  </ul>
+</nav>
+
+<!-- OVERVIEW -->
+<section id="overview" class="section active">
+  <p class="overview-intro">A flashback menu to get you in the mood for spring; featuring Ranch Cutlets, Crème Fraîche Potatoes, &amp; more Click any meal to jump to its recipe.</p>
+  <div class="week-menu">
+    <div class="day-card" data-day="1" onclick="openRecipe('day1')">
+      <img class="day-card-img" src="https://substackcdn.com/image/fetch/w_600,h_800,c_fill,f_auto,q_auto:best,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Faa58fc92-dd61-426b-a728-4355daad0a5f_1320x1984.jpeg" alt="Ranch Cutlets" loading="lazy" onerror="this.style.display='none'">
+      <div class="day-card-body">
+        <div class="day-num" style="color:#7a9e7e">Day 1</div>
+        <h3>Ranch Cutlets</h3>
+        <div class="day-sub">with AN HERBED SPRING VEGETABLE MEDLEY</div>
+      </div>
+    </div>
+    <div class="day-card" data-day="2" onclick="openRecipe('day2')">
+      <img class="day-card-img" src="https://substackcdn.com/image/fetch/w_600,h_800,c_fill,f_auto,q_auto:best,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F6c592740-4821-4dc7-bea8-ba12821d0af2_1192x1788.jpeg" alt="Boursin Butter Salmon" loading="lazy" onerror="this.style.display='none'">
+      <div class="day-card-body">
+        <div class="day-num" style="color:#c16b3a">Day 2</div>
+        <h3>Boursin Butter Salmon</h3>
+        <div class="day-sub">with BUTTERMILK MASHED POTATOES</div>
+      </div>
+    </div>
+    <div class="day-card" data-day="3" onclick="openRecipe('day3')">
+      <img class="day-card-img" src="https://substackcdn.com/image/fetch/w_600,h_800,c_fill,f_auto,q_auto:best,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F5e4e5fba-e130-4b91-9bfb-6d18da9bebfd_1224x1836.jpeg" alt="Grilled Peppercorn-Marinated Steak" loading="lazy" onerror="this.style.display='none'">
+      <div class="day-card-body">
+        <div class="day-num" style="color:#8b6f4e">Day 3</div>
+        <h3>Grilled Peppercorn-Marinated Steak</h3>
+        <div class="day-sub">with CRÈME FRAÎCHE BAKED POTATOES</div>
+      </div>
+    </div>
+    <div class="day-card" data-day="4" onclick="openRecipe('day4')">
+      <img class="day-card-img" src="https://substackcdn.com/image/fetch/w_600,h_800,c_fill,f_auto,q_auto:best,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4184b506-7278-4f4c-bffc-35a89cb128cf_1282x1923.jpeg" alt="Charred Cabbage" loading="lazy" onerror="this.style.display='none'">
+      <div class="day-card-body">
+        <div class="day-num" style="color:#6b8fad">Day 4</div>
+        <h3>Charred Cabbage</h3>
+        <div class="day-sub">with HERBY BUTTER BEAN SALAD</div>
+      </div>
+    </div>
+    <div class="day-card" data-day="5" onclick="openRecipe('day5')">
+      <img class="day-card-img" src="https://substackcdn.com/image/fetch/w_600,h_800,c_fill,f_auto,q_auto:best,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff19856a3-6d9b-4c38-9fa0-76713be95f7a_1202x1804.jpeg" alt="Lemony White Fish" loading="lazy" onerror="this.style.display='none'">
+      <div class="day-card-body">
+        <div class="day-num" style="color:#9b7fb5">Day 5</div>
+        <h3>Lemony White Fish</h3>
+        <div class="day-sub">with CRÈME FRAÎCHE BUTTER BEANS &amp; CHARRED BABY GEMS</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GROCERY -->
+<section id="grocery" class="section">
+  <div class="section-header">
+    <h2>Grocery List</h2>
+    <p>2026-04-03 &middot; Select which recipes you&rsquo;re making, then check off as you shop</p>
+  </div>
+  <div class="recipe-filter">
+    <h3>I&rsquo;m cooking this week:</h3>
+    <div class="filter-toggles">
+      <label class="filter-toggle selected" data-day="1">
+        <input type="checkbox" checked data-filter="1">
+        <div>
+          <span class="ft-day">Day 1</span>
+          <span class="ft-name">Ranch Cutlets</span>
+        </div>
+      </label>
+      <label class="filter-toggle selected" data-day="2">
+        <input type="checkbox" checked data-filter="2">
+        <div>
+          <span class="ft-day">Day 2</span>
+          <span class="ft-name">Boursin Butter Salmo</span>
+        </div>
+      </label>
+      <label class="filter-toggle selected" data-day="3">
+        <input type="checkbox" checked data-filter="3">
+        <div>
+          <span class="ft-day">Day 3</span>
+          <span class="ft-name">Grilled Peppercorn-M</span>
+        </div>
+      </label>
+      <label class="filter-toggle selected" data-day="4">
+        <input type="checkbox" checked data-filter="4">
+        <div>
+          <span class="ft-day">Day 4</span>
+          <span class="ft-name">Charred Cabbage</span>
+        </div>
+      </label>
+      <label class="filter-toggle selected" data-day="5">
+        <input type="checkbox" checked data-filter="5">
+        <div>
+          <span class="ft-day">Day 5</span>
+          <span class="ft-name">Lemony White Fish</span>
+        </div>
+      </label>
+    </div>
+    <button class="filter-all-btn" onclick="toggleAllFilters()">Select / deselect all</button>
+  </div>
+  <div class="grocery-grid">
+  <div class="grocery-category">
+    <h3>Produce</h3><ul>
+      <li class="grocery-item" data-days="1,2,3,4,5">
+        <input type="checkbox" id="g_pro_0">
+        <label class="grocery-item-label" for="g_pro_0">
+          <span class="grocery-item-name">Garlic</span>
+          <span class="meal-tags">¹²³⁴⁵</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">4 cloves</div>
+          <div class="qty-metric">~16g</div>
+        </div>
+      </li>
+      <li class="grocery-item" data-days="1,4,5">
+        <input type="checkbox" id="g_pro_1">
+        <label class="grocery-item-label" for="g_pro_1">
+          <span class="grocery-item-name">Sugar Snap Peas</span>
+          <span class="meal-tags">¹⁴⁵</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">8oz</div>
+          <div class="qty-metric">~227g</div>
+        </div>
+      </li>
+      <li class="grocery-item" data-days="1,4">
+        <input type="checkbox" id="g_pro_2">
+        <label class="grocery-item-label" for="g_pro_2">
+          <span class="grocery-item-name">English Cucumber</span>
+          <span class="meal-tags">¹⁴</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">1 - optional</div>
+          
+        </div>
+      </li>
+      <li class="grocery-item" data-days="1,2,3,4">
+        <input type="checkbox" id="g_pro_3">
+        <label class="grocery-item-label" for="g_pro_3">
+          <span class="grocery-item-name">Asparagus</span>
+          <span class="meal-tags">¹²³⁴</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">1½ to 2 bunches</div>
+          <div class="qty-metric">~675g</div>
+        </div>
+      </li>
+      <li class="grocery-item" data-days="1,3,4,5">
+        <input type="checkbox" id="g_pro_4">
+        <label class="grocery-item-label" for="g_pro_4">
+          <span class="grocery-item-name">Lemon</span>
+          <span class="meal-tags">¹³⁴⁵</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">3</div>
+          <div class="qty-metric">~330g</div>
+        </div>
+      </li>
+      <li class="grocery-item" data-days="1,5">
+        <input type="checkbox" id="g_pro_5">
+        <label class="grocery-item-label" for="g_pro_5">
+          <span class="grocery-item-name">Baby Gem Lettuce</span>
+          <span class="meal-tags">¹⁵</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">3 hearts</div>
+          <div class="qty-metric">~246g</div>
+        </div>
+      </li>
+      <li class="grocery-item" data-days="2,3">
+        <input type="checkbox" id="g_pro_6">
+        <label class="grocery-item-label" for="g_pro_6">
+          <span class="grocery-item-name">Yukon Gold Potatoes</span>
+          <span class="meal-tags">²³</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">8 medium</div>
+          <div class="qty-metric">~1200g</div>
+        </div>
+      </li>
+      <li class="grocery-item" data-days="4">
+        <input type="checkbox" id="g_pro_7">
+        <label class="grocery-item-label" for="g_pro_7">
+          <span class="grocery-item-name">Cabbage</span>
+          <span class="meal-tags">⁴ *rollover</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">½ head</div>
+          <div class="qty-metric">~225g</div>
+        </div>
+      </li>
+      <li class="grocery-item" data-days="1,2,4,5">
+        <input type="checkbox" id="g_pro_8">
+        <label class="grocery-item-label" for="g_pro_8">
+          <span class="grocery-item-name">Dill</span>
+          <span class="meal-tags">¹²⁴⁵</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">1 large bunch</div>
+          <div class="qty-metric">~42g</div>
+        </div>
+      </li>
+      <li class="grocery-item" data-days="1,2,3,4,5">
+        <input type="checkbox" id="g_pro_9">
+        <label class="grocery-item-label" for="g_pro_9">
+          <span class="grocery-item-name">Chives</span>
+          <span class="meal-tags">¹²³⁴⁵</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">2 bunches</div>
+          <div class="qty-metric">~84g</div>
+        </div>
+      </li>
+      <li class="grocery-item" data-days="1,4">
+        <input type="checkbox" id="g_pro_10">
+        <label class="grocery-item-label" for="g_pro_10">
+          <span class="grocery-item-name">Mint</span>
+          <span class="meal-tags">¹⁴</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">1 small bunch</div>
+          <div class="qty-metric">~10g</div>
+        </div>
+      </li>
+    </ul></div>
+  <div class="grocery-category">
+    <h3>Shelf-Stable</h3><ul>
+      <li class="grocery-item" data-days="4,5">
+        <input type="checkbox" id="g_she_0">
+        <label class="grocery-item-label" for="g_she_0">
+          <span class="grocery-item-name">Butter Beans</span>
+          <span class="meal-tags">⁴⁵</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">2 (15oz) cans</div>
+          <div class="qty-metric">~510g drained</div>
+        </div>
+      </li>
+      <li class="grocery-item" data-days="1">
+        <input type="checkbox" id="g_she_1">
+        <label class="grocery-item-label" for="g_she_1">
+          <span class="grocery-item-name">Panko Breadcrumbs</span>
+          <span class="meal-tags">¹</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">1 cup</div>
+          <div class="qty-metric">~60g</div>
+        </div>
+      </li>
+      <li class="grocery-item" data-days="4">
+        <input type="checkbox" id="g_she_2">
+        <label class="grocery-item-label" for="g_she_2">
+          <span class="grocery-item-name">Chicken or Vegetable Stock</span>
+          <span class="meal-tags">⁴</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">½ cup</div>
+          <div class="qty-metric">~118mL</div>
+        </div>
+      </li>
+    </ul></div>
+  <div class="grocery-category">
+    <h3>Eggs &amp; Dairy</h3><ul>
+      <li class="grocery-item" data-days="1">
+        <input type="checkbox" id="g_egg_0">
+        <label class="grocery-item-label" for="g_egg_0">
+          <span class="grocery-item-name">Eggs</span>
+          <span class="meal-tags">¹</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">1</div>
+          <div class="qty-metric">~57g</div>
+        </div>
+      </li>
+      <li class="grocery-item" data-days="1,2,3,4,5">
+        <input type="checkbox" id="g_egg_1">
+        <label class="grocery-item-label" for="g_egg_1">
+          <span class="grocery-item-name">Buttermilk</span>
+          <span class="meal-tags">¹²³⁴⁵</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">16oz</div>
+          <div class="qty-metric">~473mL</div>
+        </div>
+      </li>
+      <li class="grocery-item" data-days="1,3,4,5">
+        <input type="checkbox" id="g_egg_2">
+        <label class="grocery-item-label" for="g_egg_2">
+          <span class="grocery-item-name">Crème Fraîche</span>
+          <span class="meal-tags">¹³⁴⁵</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">8oz</div>
+          <div class="qty-metric">~227g</div>
+        </div>
+      </li>
+    </ul></div>
+  <div class="grocery-category">
+    <h3>Cheese</h3><ul>
+      <li class="grocery-item" data-days="1,4,5">
+        <input type="checkbox" id="g_che_0">
+        <label class="grocery-item-label" for="g_che_0">
+          <span class="grocery-item-name">Feta</span>
+          <span class="meal-tags">¹⁴⁵</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">8oz</div>
+          <div class="qty-metric">~227g</div>
+        </div>
+      </li>
+      <li class="grocery-item" data-days="2,3">
+        <input type="checkbox" id="g_che_1">
+        <label class="grocery-item-label" for="g_che_1">
+          <span class="grocery-item-name">Garlic &amp; Fine Herbs Boursin Cheese</span>
+          <span class="meal-tags">²³</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">5.3oz</div>
+          <div class="qty-metric">~150g</div>
+        </div>
+      </li>
+    </ul></div>
+  <div class="grocery-category">
+    <h3>Suggested Proteins</h3><ul>
+      <li class="grocery-item" data-days="1,4">
+        <input type="checkbox" id="g_sug_0">
+        <label class="grocery-item-label" for="g_sug_0">
+          <span class="grocery-item-name">Boneless Skinless Chicken Breasts</span>
+          <span class="meal-tags">¹⁴</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">1-2 (9oz)</div>
+          <div class="qty-metric">~383g</div>
+        </div>
+      </li>
+      <li class="grocery-item" data-days="5">
+        <input type="checkbox" id="g_sug_1">
+        <label class="grocery-item-label" for="g_sug_1">
+          <span class="grocery-item-name">White Fish Fillets (like Tilapia)</span>
+          <span class="meal-tags">⁵</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">2 (4oz)</div>
+          <div class="qty-metric">~227g</div>
+        </div>
+      </li>
+      <li class="grocery-item" data-days="2">
+        <input type="checkbox" id="g_sug_2">
+        <label class="grocery-item-label" for="g_sug_2">
+          <span class="grocery-item-name">Salmon Fillets</span>
+          <span class="meal-tags">²</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">2 (4oz)</div>
+          <div class="qty-metric">~227g</div>
+        </div>
+      </li>
+      <li class="grocery-item" data-days="3">
+        <input type="checkbox" id="g_sug_3">
+        <label class="grocery-item-label" for="g_sug_3">
+          <span class="grocery-item-name">NY Strip Steak</span>
+          <span class="meal-tags">³</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">1 (10-12oz)</div>
+          <div class="qty-metric">~312g</div>
+        </div>
+      </li>
+    </ul></div>
+  <div class="grocery-category">
+    <h3>Fats</h3><ul>
+      <li class="grocery-item" data-days="1,3,4,5">
+        <input type="checkbox" id="g_fat_0">
+        <label class="grocery-item-label" for="g_fat_0">
+          <span class="grocery-item-name">Olive Oil</span>
+          <span class="meal-tags">¹³⁴⁵</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">as needed</div>
+          
+        </div>
+      </li>
+      <li class="grocery-item" data-days="1,2,3,4">
+        <input type="checkbox" id="g_fat_1">
+        <label class="grocery-item-label" for="g_fat_1">
+          <span class="grocery-item-name">Neutral Oil</span>
+          <span class="meal-tags">¹²³⁴</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">as needed</div>
+          
+        </div>
+      </li>
+      <li class="grocery-item" data-days="2,4,5">
+        <input type="checkbox" id="g_fat_2">
+        <label class="grocery-item-label" for="g_fat_2">
+          <span class="grocery-item-name">Salted Butter</span>
+          <span class="meal-tags">²⁴⁵</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">as needed</div>
+          
+        </div>
+      </li>
+      <li class="grocery-item" data-days="2,3">
+        <input type="checkbox" id="g_fat_3">
+        <label class="grocery-item-label" for="g_fat_3">
+          <span class="grocery-item-name">Unsalted Butter</span>
+          <span class="meal-tags">²³</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">as needed</div>
+          
+        </div>
+      </li>
+    </ul></div>
+  <div class="grocery-category">
+    <h3>Acids &amp; Vinegars</h3><ul>
+      <li class="grocery-item" data-days="1,3,4,5">
+        <input type="checkbox" id="g_aci_0">
+        <label class="grocery-item-label" for="g_aci_0">
+          <span class="grocery-item-name">White Wine Vinegar</span>
+          <span class="meal-tags">¹³⁴⁵</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">as needed</div>
+          
+        </div>
+      </li>
+    </ul></div>
+  <div class="grocery-category">
+    <h3>Spices &amp; Aromatics</h3><ul>
+      <li class="grocery-item" data-days="1,2,3,4,5">
+        <input type="checkbox" id="g_spi_0">
+        <label class="grocery-item-label" for="g_spi_0">
+          <span class="grocery-item-name">Black Pepper</span>
+          <span class="meal-tags">¹²³⁴⁵</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">&amp; Peppercorns</div>
+          
+        </div>
+      </li>
+    </ul></div>
+  <div class="grocery-category">
+    <h3>Other</h3><ul>
+      <li class="grocery-item" data-days="1,2,3,4,5">
+        <input type="checkbox" id="g_oth_0">
+        <label class="grocery-item-label" for="g_oth_0">
+          <span class="grocery-item-name">Kosher Salt</span>
+          <span class="meal-tags">¹²³⁴⁵</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">as needed</div>
+          
+        </div>
+      </li>
+      <li class="grocery-item" data-days="1,3,4,5">
+        <input type="checkbox" id="g_oth_1">
+        <label class="grocery-item-label" for="g_oth_1">
+          <span class="grocery-item-name">Granulated Sugar</span>
+          <span class="meal-tags">¹³⁴⁵</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">as needed</div>
+          
+        </div>
+      </li>
+      <li class="grocery-item" data-days="1,4,5">
+        <input type="checkbox" id="g_oth_2">
+        <label class="grocery-item-label" for="g_oth_2">
+          <span class="grocery-item-name">Honey</span>
+          <span class="meal-tags">¹⁴⁵</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">as needed</div>
+          
+        </div>
+      </li>
+      <li class="grocery-item" data-days="1,3,4,5">
+        <input type="checkbox" id="g_oth_3">
+        <label class="grocery-item-label" for="g_oth_3">
+          <span class="grocery-item-name">Dijon Mustard</span>
+          <span class="meal-tags">¹³⁴⁵</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">as needed</div>
+          
+        </div>
+      </li>
+      <li class="grocery-item" data-days="1">
+        <input type="checkbox" id="g_oth_4">
+        <label class="grocery-item-label" for="g_oth_4">
+          <span class="grocery-item-name">All-Purpose Flour</span>
+          <span class="meal-tags">¹</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">as needed</div>
+          
+        </div>
+      </li>
+      <li class="grocery-item" data-days="2,3,5">
+        <input type="checkbox" id="g_oth_5">
+        <label class="grocery-item-label" for="g_oth_5">
+          <span class="grocery-item-name">Flaky Salt</span>
+          <span class="meal-tags">²³⁵</span>
+        </label>
+        <div class="grocery-item-convert">
+          <div class="qty-main">as needed</div>
+          
+        </div>
+      </li>
+    </ul></div>
+</div>
+</section>
+
+<!-- PREP -->
+<section id="prep" class="section">
+  <div class="section-header">
+    <h2>Sunday Prep List</h2>
+    <p>2026-04-03 &middot; Check off as you go</p>
+  </div>
+  <div class="prep-timeline">
+  <div class="prep-block">
+    <h3>Prep Produce  ³ = Grilled Steak <span class="time-badge">30 minutes</span></h3>
+    <ul class="prep-items">
+      <li><input type="checkbox" id="p0_0"><label for="p0_0">Cabbage (½ head; slice into 2 wedges)⁴ ⁵ = Lemony White Fish</label></li>
+      <li><input type="checkbox" id="p0_1"><label for="p0_1">Snap Peas (8 oz; slice/chop at a diagonal - yield 1 cup)¹⁴⁵ = used in “prepped ingredient”</label></li>
+      <li><input type="checkbox" id="p0_2"><label for="p0_2">Asparagus (1½-2 bunches; remove the fibrous ends)¹²³⁴ = estimated time</label></li>
+      <li><input type="checkbox" id="p0_3"><label for="p0_3">Baby Gem Lettuce (2-3 hearts; slice in half, wash, &amp; dry)¹⁵</label></li>
+      <li><input type="checkbox" id="p0_4"><label for="p0_4">Cucumber - optional (1; peel, deseed, &amp; half moon chop - yield 1 cup)¹⁴</label></li>
+      <li><input type="checkbox" id="p0_5"><label for="p0_5">Lemon (2; slice in half)</label></li>
+      <li><input type="checkbox" id="p0_6"><label for="p0_6">Herbs (wash &amp; store separately)</label></li>
+      <li><input type="checkbox" id="p0_7"><label for="p0_7">Dill (1 bunch; finely chop - yield ~½ cup)¹²⁴⁵</label></li>
+      <li><input type="checkbox" id="p0_8"><label for="p0_8">Chives (1 bunch; finely chop - yield ~½ cup)¹²³⁴⁵</label></li>
+      <li><input type="checkbox" id="p0_9"><label for="p0_9">Mint (1 bunch; pick leaves)¹⁴</label></li>
+      <li><input type="checkbox" id="p0_10"><label for="p0_10">Garlic (4 cloves; peel)⁴</label></li>
+      <li><input type="checkbox" id="p0_11"><label for="p0_11">CLEANING BREAK</label></li>
+    </ul>
+  </div>
+  <div class="prep-block">
+    <h3>Boil Yukon Gold Potatoes²³ </h3>
+    <ul class="prep-items">
+      <li><input type="checkbox" id="p1_0"><label for="p1_0">Place 8 potatoes in a large pot and cover with cold water. Bring to a boil &amp; cook until</label></li>
+      <li><input type="checkbox" id="p1_1"><label for="p1_1">fork tender</label></li>
+    </ul>
+  </div>
+  <div class="prep-block">
+    <h3>Strain 2 cans Butter Beans ⁴⁵ </h3>
+    <ul class="prep-items">
+      <li><input type="checkbox" id="p2_0"><label for="p2_0">Strain 2 cans Butter Beans ⁴⁵</label></li>
+    </ul>
+  </div>
+  <div class="prep-block">
+    <h3>Blanch Sugar Snap Peas ¹⁴⁵ &amp; Asparagus ¹²³⁴ </h3>
+    <ul class="prep-items">
+      <li><input type="checkbox" id="p3_0"><label for="p3_0">Bring a pot of water seasoned with salt to a boil, and prepare a bowl of ice water</label></li>
+      <li><input type="checkbox" id="p3_1"><label for="p3_1">seasoned with salt, set aside. Add veg &amp; cook til tender. Then transfer to ice bath.</label></li>
+      <li><input type="checkbox" id="p3_2"><label for="p3_2">Note: Asparagus usually blanches in ~2-4 min, depending on the size. Test the base</label></li>
+      <li><input type="checkbox" id="p3_3"><label for="p3_3">of the spears with a fork while they&#x27;re cooking to gauge when they&#x27;re tender.</label></li>
+    </ul>
+  </div>
+  <div class="prep-block">
+    <h3>Crumble Feta ¹⁴⁵ </h3>
+    <ul class="prep-items">
+      <li><input type="checkbox" id="p4_0"><label for="p4_0">Crumble Feta ¹⁴⁵</label></li>
+    </ul>
+  </div>
+  <div class="prep-block">
+    <h3>Prepare Peppercorn Marinade ³ </h3>
+    <ul class="prep-items">
+      <li><input type="checkbox" id="p5_0"><label for="p5_0">Prepare Peppercorn Marinade ³</label></li>
+    </ul>
+  </div>
+  <div class="prep-block">
+    <h3>Finish Sauces </h3>
+    <ul class="prep-items">
+      <li><input type="checkbox" id="p6_0"><label for="p6_0">Herbed Crème Fraîche Sauce (page 9)¹³⁴⁵</label></li>
+      <li><input type="checkbox" id="p6_1"><label for="p6_1">Buttermilk Brine (page 6)¹⁴</label></li>
+      <li><input type="checkbox" id="p6_2"><label for="p6_2">Simple Lemon Vinaigrette (page 7)¹⁴⁵</label></li>
+      <li><input type="checkbox" id="p6_3"><label for="p6_3">Boursin Butter (page 8)²³</label></li>
+      <li><input type="checkbox" id="p6_4"><label for="p6_4">OPTIONAL ADDITIONAL PREP</label></li>
+    </ul>
+  </div>
+  <div class="prep-block">
+    <h3>Prepare Buttermilk Biscuits ¹³⁴⁵ </h3>
+    <ul class="prep-items">
+      <li><input type="checkbox" id="p7_0"><label for="p7_0">Prepare Buttermilk Biscuits ¹³⁴⁵</label></li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<!-- RECIPES -->
+<section id="recipes" class="section">
+  <div class="recipe-nav">
+    <button class="recipe-tab active" data-recipe="day1">
+      <span class="rt-day">Day 1</span>
+      <span class="rt-name">Ranch Cutlets</span>
+    </button>
+    <button class="recipe-tab" data-recipe="day2">
+      <span class="rt-day">Day 2</span>
+      <span class="rt-name">Boursin Butter Salmon</span>
+    </button>
+    <button class="recipe-tab" data-recipe="day3">
+      <span class="rt-day">Day 3</span>
+      <span class="rt-name">Grilled Peppercorn-Marinated Steak</span>
+    </button>
+    <button class="recipe-tab" data-recipe="day4">
+      <span class="rt-day">Day 4</span>
+      <span class="rt-name">Charred Cabbage</span>
+    </button>
+    <button class="recipe-tab" data-recipe="day5">
+      <span class="rt-day">Day 5</span>
+      <span class="rt-name">Lemony White Fish</span>
+    </button>
+    <button class="recipe-tab sauce-tab" data-recipe="sauces">
+      <span class="rt-day">Bases</span>
+      <span class="rt-name">Sauces &amp; Brines</span>
+    </button>
+  </div>
+
+  <div id="recipe-day1" class="recipe-panel active">
+    <div class="recipe-header">
+      <div class="recipe-header-top">
+        <div>
+          <div class="recipe-day-label" style="color:#7a9e7e">Day 1</div>
+          <h2>RANCH CUTLETS</h2>
+          <div class="recipe-sub">WITH AN HERBED SPRING VEGETABLE MEDLEY</div>
+          <div class="servings">Makes 2 servings</div>
+        </div>
+        <div class="recipe-actions">
+          <button class="save-cookbook-btn" id="save-btn-day1" onclick="saveRecipeToCookbook('day1')">&#9825; Save to Cookbook</button>
+        </div>
+      </div>
+    </div>
+    <div class="recipe-body">
+      <div class="ingredients-col">
+        <h3>Ingredients</h3>
+        <ul>
+          <li>WITH AN HERBED SPRING</li>
+          <li>⅓ to ⅔ cup Buttermilk Brine (page 6) (see Note)</li>
+          <li>1 (9-ounce) boneless skinless chicken breast, sliced <span class="ingr-metric">~255g</span></li>
+          <li>in half lengthwise</li>
+          <li>½ cup all-purpose flour <span class="ingr-metric">~64g</span></li>
+          <li>Kosher salt</li>
+          <li>1 egg <span class="ingr-metric">~57g</span></li>
+          <li>1 cup panko breadcrumbs <span class="ingr-metric">~60g</span></li>
+          <li>1 tablespoon plus 1 teaspoon chopped dill, divided</li>
+          <li>1 tablespoon chopped chives</li>
+          <li>Freshly ground black pepper to taste</li>
+          <li>High smoke point neutral oil, for frying</li>
+          <li>3 to 4 blanched asparagus spears, 1-inch chopped</li>
+          <li>1 heart of baby gem lettuce, torn into bite-sized <span class="ingr-metric">~82g</span></li>
+          <li>pieces</li>
+          <li>¼ cup crumbled feta cheese <span class="ingr-metric">~30g</span></li>
+          <li>6 to 7 mint leaves, hand torn</li>
+          <li>⅓ cup chopped and blanched sugar snap peas <span class="ingr-metric">~67g</span></li>
+          <li>½ cup seeded and chopped cucumbers (optional)</li>
+          <li>Simple Lemon Vinaigrette to taste (page 7)</li>
+          <li>Herbed Crème Fraîche Sauce, for serving (page 9)</li>
+          <li>2 freshly baked Buttermilk Biscuits (optional)</li>
+          <li>Note:</li>
+          <li>● If opting for animal protein on day 4, reserve half of the</li>
+          <li>Buttermilk Brine for said protein, rather than using the entire</li>
+          <li>batch here.</li>
+        </ul>
+      </div>
+      <div class="instructions-col">
+        <h3>Instructions</h3>
+        <ol>
+          <li>ETABLE MEDLEY INSTRUCTIONS</li>
+          <li> In a small mixing bowl, combine the Buttermilk Brine and chicken breast halves. Rest for at least 30 minutes at room temperature or up to 8 hours in the refrigerator.</li>
+          <li> Pat the chicken dry with a paper towel, then transfer it to a shallow bowl. Coat with the flour and a pinch of salt. In a separate shallow bowl, whisk the egg; in another shallow bowl, mix panko breadcrumbs, 1 tablespoon of the dill, chives, a generous pinch of salt, and pepper.</li>
+          <li> Transfer the chicken to the egg mixture, coating both sides. Then transfer the chicken into the breadcrumb mixture, firmly pressing the breadcrumbs onto the chicken.</li>
+          <li> In a large heavy-bottomed or cast-iron skillet, heat enough neutral oil to coat the bottom over medium-high heat — it should fill ¼ inch up the side of the pan. Line a large plate with paper towels and set aside.</li>
+          <li> Once the oil reaches 375ºF, carefully add the chicken cutlets and cook until golden brown and crispy, about 3 to 4 minutes per side. Once the internal temperature reaches 165ºF, transfer the cutlets to the prepared plate and season with a pinch of salt. Allow the chicken to rest for 5 minutes before serving.</li>
+          <li> Meanwhile, in a medium mixing bowl, combine asparagus, lettuce, feta, mint, the remaining teaspoon of dill, sugar snap peas, cucumber (optional), and lemon vinaigrette. Toss until coated. Taste and adjust seasoning.</li>
+          <li> Spread a dollop of herbed crème fraîche onto each plate and top with a chicken cutlet. Plate the herbed vegetable medley next to the cutlet and garnish with pepper. Serve with warm buttermilk biscuits (optional).</li>
+        </ol>
+        <div class="recipe-note"><strong>Note</strong>● If opting for animal protein on day 4, reserve half of the Meanwhile, in a medium mixing bowl, combine Buttermilk Brine for said protein, rather than using the entire asparagus, lettuce, feta, mint, the remaining batch here. teaspoon of dill, sugar snap peas, cucumber (optional), and lemon vinaigrette. Toss until coated. Taste and adjust seasoning. Step 7 Spread a dollop of herbed crème fraîche onto each plate and top with a chicken cutlet. Plate the herbed vegetable medley next to the cutlet and garnish with pepper. Serve with warm buttermilk biscuits (optional). 1 Restaurant Dropout • Week 107</div>
+      </div>
+    </div>
+  </div>
+  <div id="recipe-day2" class="recipe-panel">
+    <div class="recipe-header">
+      <div class="recipe-header-top">
+        <div>
+          <div class="recipe-day-label" style="color:#c16b3a">Day 2</div>
+          <h2>BOURSIN BUTTER SALMON</h2>
+          <div class="recipe-sub">WITH BUTTERMILK MASHED POTATOES</div>
+          <div class="servings">Makes 2 servings</div>
+        </div>
+        <div class="recipe-actions">
+          <button class="save-cookbook-btn" id="save-btn-day2" onclick="saveRecipeToCookbook('day2')">&#9825; Save to Cookbook</button>
+        </div>
+      </div>
+    </div>
+    <div class="recipe-body">
+      <div class="ingredients-col">
+        <h3>Ingredients</h3>
+        <ul>
+          <li>BOURSIN BUTTER SAL</li>
+          <li>WITH BUTTERMILK MASH</li>
+          <li>4 cooked Yukon Gold potatoes</li>
+          <li>2 (4-ounce) salmon fillets <span class="ingr-metric">~227g</span></li>
+          <li>Kosher salt</li>
+          <li>Freshly ground black pepper</li>
+          <li>Neutral oil</li>
+          <li>12 to 14 blanched asparagus spears</li>
+          <li>3 tablespoons salted butter <span class="ingr-metric">~42g</span></li>
+          <li>¾ cup buttermilk <span class="ingr-metric">~178mL</span></li>
+          <li>¼ cup Boursin Butter, reheated* (page 8)</li>
+          <li>Chopped chives, for garnish</li>
+          <li>Chopped dill, for garnish</li>
+          <li>Flaky salt (optional)</li>
+          <li>*To Reheat the Boursin Butter, place the instructed</li>
+          <li>amount of sauce in a microwave-safe container and</li>
+          <li>microwave until heated through, about 30 to 45</li>
+          <li>seconds. Transfer the mixture to a mixing bowl and</li>
+          <li>whisk until smooth.</li>
+        </ul>
+      </div>
+      <div class="instructions-col">
+        <h3>Instructions</h3>
+        <ol>
+          <li>N OTATOES INSTRUCTIONS</li>
+          <li> Bring a medium pot of water up to a boil. Once the water begins to boil, add cooked potatoes and cook until fully heated through, 3 to 4 minutes. Drain and return them to the pot. Set aside.</li>
+          <li> Season salmon fillets with salt and pepper. Set aside.</li>
+          <li> Heat a medium pan over high heat and add neutral oil. Add blanched asparagus and a pinch of salt. Sauté until lightly seared on all sides, 3 to 4 minutes. Remove the asparagus from the skillet, divide and plate.</li>
+          <li> In the same skillet, add another 1 to 2 glugs of neutral oil. Place the seasoned salmon fillets, presentation side down. Cook until golden and crisp, then flip and finish cooking to preferred doneness.</li>
+          <li> Add butter and a couple of generous pinches of salt, then mash until smooth and creamy. Add the buttermilk and mix until smooth. Cook over medium-high heat, stirring occasionally until fully heated through. Season with additional salt to taste, if needed.</li>
+          <li> Divide and spoon the mashed potatoes onto each plate, next to the cooked asparagus. Top with the cooked salmon, presentation side facing up. Dollop a large spoonful of Boursin Butter onto each cooked salmon fillet and garnish with chives, dill, freshly ground black pepper, and flaky salt (optional).</li>
+        </ol>
+        
+      </div>
+    </div>
+  </div>
+  <div id="recipe-day3" class="recipe-panel">
+    <div class="recipe-header">
+      <div class="recipe-header-top">
+        <div>
+          <div class="recipe-day-label" style="color:#8b6f4e">Day 3</div>
+          <h2>GRILLED PEPPERCORN-MARINATED STEAK</h2>
+          <div class="recipe-sub">WITH CRÈME FRAÎCHE BAKED POTATOES</div>
+          <div class="servings">Makes 2 servings</div>
+        </div>
+        <div class="recipe-actions">
+          <button class="save-cookbook-btn" id="save-btn-day3" onclick="saveRecipeToCookbook('day3')">&#9825; Save to Cookbook</button>
+        </div>
+      </div>
+    </div>
+    <div class="recipe-body">
+      <div class="ingredients-col">
+        <h3>Ingredients</h3>
+        <ul>
+          <li>GRILLED PEPPERCOR</li>
+          <li>WITH CRÈME FRAÎCHE BA</li>
+          <li>1 (10- to 12-ounce) New York strip steak <span class="ingr-metric">~312g</span></li>
+          <li>⅔ cup Peppercorn Marinade (page 10) <span class="ingr-metric">~158mL</span></li>
+          <li>4 cooked Yukon gold potatoes</li>
+          <li>Extra-virgin olive oil</li>
+          <li>Kosher salt</li>
+          <li>14 to 16 asparagus spears</li>
+          <li>2 tablespoons Herbed Crème Fraîche (page 9)</li>
+          <li>Chopped chives, for garnish</li>
+          <li>Flaky salt, for garnish</li>
+          <li>Freshly ground black pepper, for garnish</li>
+          <li>¼ cup Boursin Butter, for serving (page 8)</li>
+          <li>2 freshly baked Buttermilk Biscuits (optional)</li>
+        </ul>
+      </div>
+      <div class="instructions-col">
+        <h3>Instructions</h3>
+        <ol>
+          <li>ARINATED STEAK POTATOES INSTRUCTIONS</li>
+          <li> Place the steak in a small bowl and cover with the peppercorn marinade. Marinate for at least 30 minutes at room temperature or up to 4 hours in the refrigerator.</li>
+          <li> Preheat the oven to 400ºF.</li>
+          <li> Place cooked potatoes on a parchment-lined sheet tray and lightly coat in olive oil and salt. Bake for 15 minutes.</li>
+          <li> Preheat the grill on high heat and lightly oil the grill grates.</li>
+          <li> Lightly season the asparagus with olive oil and salt, then place on the grill.</li>
+          <li> Pat the marinated steak down with a paper towel, removing the excess moisture, then place directly on the grill to cook for 4 to 5 minutes, or until a crust forms. Flip and continue grilling until the steak reaches your desired doneness (130ºF-135ºF for medium-rare; 140ºF-145ºF for medium; 150ºF-155ºF for medium-well). Transfer the cooked steak and asparagus to a plate and cover loosely with foil. Rest for 5 minutes.</li>
+          <li> Remove the baked potatoes from the oven and plate. Using a sharp knife, cut two even crosscuts on the tops of the potatoes, opening them up. Place a dollop of crème fraîche in each potato and garnish with chives, flaky salt, and pepper. Serve alongside the grilled asparagus.</li>
+          <li> Slice the steak across the grain, and plate directly next to the asparagus. Top the steak with a dollop of Boursin Butter. Serve with freshly baked buttermilk biscuits on the side (optional).</li>
+        </ol>
+        
+      </div>
+    </div>
+  </div>
+  <div id="recipe-day4" class="recipe-panel">
+    <div class="recipe-header">
+      <div class="recipe-header-top">
+        <div>
+          <div class="recipe-day-label" style="color:#6b8fad">Day 4</div>
+          <h2>CHARRED CABBAGE</h2>
+          <div class="recipe-sub">WITH HERBY BUTTER BEAN SALAD</div>
+          <div class="servings">Makes 2 servings</div>
+        </div>
+        <div class="recipe-actions">
+          <button class="save-cookbook-btn" id="save-btn-day4" onclick="saveRecipeToCookbook('day4')">&#9825; Save to Cookbook</button>
+        </div>
+      </div>
+    </div>
+    <div class="recipe-body">
+      <div class="ingredients-col">
+        <h3>Ingredients</h3>
+        <ul>
+          <li>WITH HERBY BUTTER BEA</li>
+          <li>⅓ cup Buttermilk Brine (page 6) (optional) <span class="ingr-metric">~79mL</span></li>
+          <li>1 (9-ounce) boneless skinless chicken breast, <span class="ingr-metric">~255g</span></li>
+          <li>sliced in half lengthwise (optional)</li>
+          <li>Neutral, high-smoke point oil</li>
+          <li>½ head of cabbage, sliced into wedges <span class="ingr-metric">~225g</span></li>
+          <li>Kosher salt</li>
+          <li>Freshly ground black pepper</li>
+          <li>2 tablespoons salted butter <span class="ingr-metric">~28g</span></li>
+          <li>1 garlic clove, grated <span class="ingr-metric">~4g</span></li>
+          <li>½ cup chicken or vegetable stock <span class="ingr-metric">~118mL</span></li>
+          <li>1 (15-ounce) can butter beans, rinsed and <span class="ingr-metric">~425g</span></li>
+          <li>strained (about 1½ cups)</li>
+          <li>A pinch of chopped dill, plus more for garnish</li>
+          <li>A pinch of chopped chives</li>
+          <li>5 to 6 mint leaves, hand torn</li>
+          <li>3 to 4 blanched asparagus spears, 1-inch</li>
+          <li>chopped</li>
+          <li>⅓ cup chopped &amp; blanched sugar snap peas <span class="ingr-metric">~67g</span></li>
+          <li>½ cup (or remaining) seeded &amp; chopped</li>
+          <li>cucumber (optional)</li>
+          <li>¼ cup crumbled feta cheese <span class="ingr-metric">~30g</span></li>
+          <li>Simple Lemon Vinaigrette, to taste (page 7)</li>
+          <li>3 to 4 tablespoons Herbed Crème Fraîche</li>
+          <li>Sauce, for garnish (page 9)</li>
+          <li>2 freshly baked Buttermilk Biscuits (optional)</li>
+        </ul>
+      </div>
+      <div class="instructions-col">
+        <h3>Instructions</h3>
+        <ol>
+          <li>LAD INSTRUCTIONS Brine the Chicken (Optional) In a small mixing bowl, combine buttermilk brine and chicken breast. Rest for at least 30 minutes at room temperature or up to 8 hours in the refrigerator.</li>
+          <li> Heat neutral oil in a large skillet over high heat. Once the oil is hot and shimmering, add cabbage wedges. Season with salt and pepper and cook for 3 to 4 minutes, undisturbed. Flip the cabbage and continue cooking for an additional 3 to 4 minutes.</li>
+          <li> If preparing chicken…move the cabbage wedges to the side of the skillet and add a couple glugs of neutral oil to the now-empty side of the skillet. Pat the brined chicken down with a paper towel and place directly onto the hot oil. Sear, untouched, for 2 to 3 minutes, until a golden brown crust forms. Flip the chicken and continue cooking as instructed below.</li>
+          <li> Add butter to the skillet. Once the butter is fully melted, add grated garlic and cook just until fragrant, 10 to 15 seconds. Slowly pour in the stock and bring to a boil on high heat for 45 seconds to 1 minute. Reduce the heat to low, cover, and finish cooking for 5 to 6 minutes while you prepare the herby butter bean salad.</li>
+          <li> In a large mixing bowl, combine butter beans, dill, chives, mint, asparagus, sugar snap peas, cucumber (optional), and feta. Add lemon vinaigrette, salt, and pepper to taste, stirring until fully combined.</li>
+          <li> Plate the herby butter bean salad and top with charred cabbage and chicken (if preparing). Garnish with a dollop of herbed crème fraîche sauce and top with dill and black pepper. Serve with freshly baked buttermilk biscuits on the side (optional).</li>
+        </ol>
+        
+      </div>
+    </div>
+  </div>
+  <div id="recipe-day5" class="recipe-panel">
+    <div class="recipe-header">
+      <div class="recipe-header-top">
+        <div>
+          <div class="recipe-day-label" style="color:#9b7fb5">Day 5</div>
+          <h2>LEMONY WHITE FISH</h2>
+          <div class="recipe-sub">WITH CRÈME FRAÎCHE BUTTER BEANS &amp; CHARRED BABY GEMS</div>
+          <div class="servings">Makes 2 servings</div>
+        </div>
+        <div class="recipe-actions">
+          <button class="save-cookbook-btn" id="save-btn-day5" onclick="saveRecipeToCookbook('day5')">&#9825; Save to Cookbook</button>
+        </div>
+      </div>
+    </div>
+    <div class="recipe-body">
+      <div class="ingredients-col">
+        <h3>Ingredients</h3>
+        <ul>
+          <li>WITH CRÈME FRAÎCHE BUTTER</li>
+          <li>2 (4-ounce) white fish fillets, such as tilapia <span class="ingr-metric">~227g</span></li>
+          <li>Olive oil</li>
+          <li>Kosher salt</li>
+          <li>½ lemon, thinly sliced, divided <span class="ingr-metric">~55g</span></li>
+          <li>3 tablespoons cold salted butter, broken into small <span class="ingr-metric">~42g</span></li>
+          <li>chunks</li>
+          <li>1 to 2 pinches of chopped dill</li>
+          <li>2 hearts of baby gem lettuce, sliced in half <span class="ingr-metric">~164g</span></li>
+          <li>⅓ cup (or remaining) chopped and blanched sugar</li>
+          <li>snap peas</li>
+          <li>15-ounce can (about 1½ cups) butter beans, rinsed</li>
+          <li>and strained</li>
+          <li>Freshly ground black pepper</li>
+          <li>¼ cup or remaining Herbed Crème Fraîche Sauce <span class="ingr-metric">~59mL</span></li>
+          <li>(page 9)</li>
+          <li>Simple Lemon Vinaigrette to taste (page 7)</li>
+          <li>Chopped chives</li>
+          <li>⅓ cup crumbled feta cheese <span class="ingr-metric">~40g</span></li>
+          <li>Flaky salt</li>
+          <li>2 freshly baked Buttermilk Biscuits (optional)</li>
+        </ul>
+      </div>
+      <div class="instructions-col">
+        <h3>Instructions</h3>
+        <ol>
+          <li>S &amp; CHARRED BABY GEMS INSTRUCTIONS</li>
+          <li> Preheat your oven to 400ºF.</li>
+          <li> Place the white fish fillets on a parchment-lined baking sheet and pat dry with a paper towel. Lightly coat with olive oil and a generous pinch of salt.</li>
+          <li> Top each fillet with 3 lemon slices, followed by a few small chunks of butter. Sprinkle a pinch of chopped dill directly over the lemon slices and bake for 11 to 12 minutes.</li>
+          <li> Heat a few glugs of olive oil in a large sauté pan over high heat. Once the oil is hot, add the baby gem lettuce, cut side facing down.</li>
+          <li> Sear, undisturbed for 1 ½ to 2 minutes until slightly charred. Remove from the pan and plate, cut side facing up. Set aside.</li>
+          <li> In the same skillet, add a few more glugs of oil. Add the snap peas and a pinch of salt. Once the snap peas are slightly charred, reduce the heat to low and add the butter beans, a pinch of salt and pepper, and the herbed crème fraîche sauce. Stir until well combined and cook until heated through.</li>
+          <li> Top charred baby gem with lemon vinaigrette, chives, feta, and flaky salt and pepper. Plate alongside the crème fraîche butter beans.</li>
+          <li> Place the baked fish directly on top of the beans, and serve with freshly baked buttermilk biscuits (optional) on the side.</li>
+        </ol>
+        
+      </div>
+    </div>
+  </div>
+
+  <div id="recipe-sauces" class="recipe-panel">
+    <div class="recipe-header">
+      <div class="recipe-day-label" style="color:var(--sage)">Prep Day</div>
+      <h2>Sauces, Brines &amp; Marinades</h2>
+      <div class="recipe-sub">Make all of these on Sunday during prep</div>
+    </div>
+    <div class="sauce-grid">
+      <div class="sauce-card">
+        <h3>BUTTERMILK BRINE</h3>
+        <div class="yield">⅔ cup</div>
+        <div class="sauce-two-col">
+          <div><h4>Ingredients</h4><ul>
+              <li>½ cup buttermilk</li>
+              <li>½ teaspoon granulated sugar</li>
+          </ul></div>
+          <div><h4>Instructions</h4><ol>
+              <li>INSTRUCTIONS</li>
+              <li> Add all ingredients to a blender or food processor and blend until fully combined. Notes: ● To Store, transfer the brine to an air-tight container and store in the refrigerator.</li>
+          </ol></div>
+        </div>
+        <div class="recipe-note" style="margin-top:12px;"><strong>Note</strong>● To Store, transfer the brine to an air-tight 1 teaspoon kosher salt container and store in the refrigerator. ½ teaspoon granulated sugar 6 Restaurant Dropout • Week 107</div>
+      </div>
+      <div class="sauce-card">
+        <h3>SIMPLE LEMON VINAIGRETTE</h3>
+        <div class="yield">½ cup</div>
+        <div class="sauce-two-col">
+          <div><h4>Ingredients</h4><ul>
+              <li>SIMPLE LEMON VINAI</li>
+              <li>½ cup (100g) extra-virgin olive oil</li>
+              <li>Juice of 1 lemon (50g)</li>
+              <li>1½ tablespoons (24g) honey</li>
+              <li>½ teaspoon (3g) kosher salt</li>
+          </ul></div>
+          <div><h4>Instructions</h4><ol>
+              <li>TTE INSTRUCTIONS</li>
+              <li> Place olive oil and garlic in a microwave-safe container and microwave for 15 to 20 seconds until the garlic is slightly soft and fragrant.</li>
+              <li> Transfer the olive oil and garlic to a blender with the remaining ingredients and blend until fully combined. Notes: ● To Store, transfer the vinaigrette to an air-tight container and store in the refrigerator.</li>
+          </ol></div>
+        </div>
+        <div class="recipe-note" style="margin-top:12px;"><strong>Note</strong>● To Store, transfer the vinaigrette to an air-tight container and store in the refrigerator. 7 Restaurant Dropout • Week 107</div>
+      </div>
+      <div class="sauce-card">
+        <h3>BOURSIN BUTTER</h3>
+        <div class="yield">½ cup</div>
+        <div class="sauce-two-col">
+          <div><h4>Ingredients</h4><ul>
+
+          </ul></div>
+          <div><h4>Instructions</h4><ol>
+              <li>INSTRUCTIONS</li>
+              <li> Crumble the Boursin into a small mixing bowl and set aside.</li>
+              <li> In a small saucepan, heat butter until melted. Add garlic and cook until fragrant, 15 to 20 seconds.</li>
+              <li> Pour the garlic butter directly over the boursin cheese and whisk until smooth and fully combined. Notes: ● To Store, transfer the butter to an airtight container and refrigerate. ● To Reheat the Boursin Butter, place the instructed amount of sauce in a microwave-safe container and microwave until heated through, about 30 to 45 seconds. Transfer the mixture to a mixing bowl and whisk until smooth.</li>
+          </ol></div>
+        </div>
+        <div class="recipe-note" style="margin-top:12px;"><strong>Note</strong>● To Store, transfer the butter to an airtight container and refrigerate. ● To Reheat the Boursin Butter, place the instructed amount of sauce in a microwave-safe container and microwave until heated through, about 30 to 45 seconds. Transfer the mixture to a mixing bowl and whisk until smooth. 8 Restaurant Dropout • Week 107</div>
+      </div>
+      <div class="sauce-card">
+        <h3>HERBED CRÈME FRAÎCHE SAUCE</h3>
+        <div class="yield">¾ cup</div>
+        <div class="sauce-two-col">
+          <div><h4>Ingredients</h4><ul>
+              <li>HERBED CRÈME FRAÎ</li>
+              <li>½ cup crème fraîche</li>
+              <li>¼ cup buttermilk</li>
+              <li>¼ teaspoon black pepper</li>
+              <li>¼ teaspoon granulated sugar</li>
+          </ul></div>
+          <div><h4>Instructions</h4><ol>
+              <li>SAUCE INSTRUCTIONS</li>
+              <li> Place all ingredients in a small mixing bowl and whisk until well combined. Notes: ● To Store, transfer the sauce to an airtight container and refrigerate for later use.</li>
+          </ol></div>
+        </div>
+        <div class="recipe-note" style="margin-top:12px;"><strong>Note</strong>1 teaspoon kosher salt ● To Store, transfer the sauce to an airtight 1 teaspoon lemon juice container and refrigerate for later use. ¼ teaspoon black pepper ¼ teaspoon granulated sugar 9 Restaurant Dropout • Week 107</div>
+      </div>
+      <div class="sauce-card">
+        <h3>PEPPERCORN MARINADE</h3>
+        <div class="yield">⅔ cup</div>
+        <div class="sauce-two-col">
+          <div><h4>Ingredients</h4><ul>
+              <li>PEPPERCORN MARIN</li>
+              <li>½ cup extra-virgin olive oil</li>
+              <li>1½ tablespoons Dijon mustard</li>
+              <li>1½ teaspoons kosher salt</li>
+              <li>½ teaspoon granulated sugar</li>
+          </ul></div>
+          <div><h4>Instructions</h4><ol>
+              <li>INSTRUCTIONS</li>
+              <li> Place black peppercorns in a large plastic bag and crush them with a rolling pin or the bottom of a heavy skillet.</li>
+              <li> Transfer the crushed black peppercorns to a mixing bowl with the remaining ingredients. Whisk until well combined. Notes: ● To Store, transfer the marinade to an airtight container and refrigerate.</li>
+          </ol></div>
+        </div>
+        <div class="recipe-note" style="margin-top:12px;"><strong>Note</strong>● To Store, transfer the marinade to an airtight container and refrigerate. 10 Restaurant Dropout • Week 107</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MY COOKBOOK -->
+<section id="cookbook" class="section">
+  <div class="section-header">
+    <h2>My Cookbook</h2>
+    <p>Recipes you&rsquo;ve loved &mdash; saved, starred, and logged across every week</p>
+  </div>
+  <div class="cb-toolbar">
+    <input type="text" class="cb-search" id="cb-search" placeholder="Search by recipe name or week&hellip;" oninput="renderCookbook()">
+    <div class="cb-filter-btns">
+      <button class="cb-filter-btn active" id="cb-filter-all" onclick="setCbFilter('all')">All</button>
+      <button class="cb-filter-btn" id="cb-filter-starred" onclick="setCbFilter('starred')">&#9733; Starred</button>
+    </div>
+    <button class="cb-new-btn" onclick="openLogModal(null, null)">+ Add Entry</button>
+  </div>
+  <div class="cb-grid" id="cb-grid">
+    <div class="cb-empty"><p>No saved recipes yet.<br>Hit <strong>&ldquo;&#9825; Save to Cookbook&rdquo;</strong> on any recipe you love!</p></div>
+  </div>
+  <div class="cb-divider">Cook Log</div>
+  <div class="cb-log-section">
+    <div id="cb-log-list"><p style="color:var(--muted);font-size:14px">No log entries yet.</p></div>
+  </div>
+</section>
+
+<!-- LOG ENTRY MODAL -->
+<div class="cb-modal-overlay" id="cb-modal" style="display:none" onclick="if(event.target===this)closeLogModal()">
+  <div class="cb-modal">
+    <div class="cb-modal-hdr">
+      <h3 id="cb-modal-title">Add Cook Log Entry</h3>
+      <button class="cb-modal-close" onclick="closeLogModal()">&times;</button>
+    </div>
+    <div class="cb-modal-body">
+      <div class="cb-type-toggle">
+        <button class="cb-type-btn active" id="cb-type-linked" onclick="setCbType('linked')">Saved Recipe</button>
+        <button class="cb-type-btn" id="cb-type-manual" onclick="setCbType('manual')">Manual Entry</button>
+      </div>
+      <div id="cb-linked-fields">
+        <div class="cb-form-group">
+          <label>Recipe</label>
+          <select id="cb-recipe-select"><option value="">Choose a saved recipe&hellip;</option></select>
+        </div>
+      </div>
+      <div id="cb-manual-fields" style="display:none">
+        <div class="cb-form-group">
+          <label>Recipe Name</label>
+          <input type="text" id="cb-manual-title" placeholder="e.g. Grandma&rsquo;s Lemon Pasta">
+        </div>
+        <div class="cb-form-group">
+          <label>Ingredients (optional)</label>
+          <textarea id="cb-manual-ingr" placeholder="Paste or type ingredients&hellip;" style="min-height:100px"></textarea>
+        </div>
+        <div class="cb-form-group">
+          <label>Instructions (optional)</label>
+          <textarea id="cb-manual-inst" placeholder="Paste or type steps&hellip;" style="min-height:100px"></textarea>
+        </div>
+      </div>
+      <div class="cb-form-group">
+        <label>Date Made</label>
+        <input type="date" id="cb-log-date">
+      </div>
+      <div class="cb-form-group">
+        <label>Notes</label>
+        <textarea id="cb-log-notes" placeholder="What worked, what you&rsquo;d change, substitutions&hellip;"></textarea>
+      </div>
+      <div class="cb-form-group">
+        <label>Rating</label>
+        <div class="cb-rating-row" id="cb-rating-row">
+          <span class="cb-rating-star" data-v="1" onclick="setCbRating(1)">&#9733;</span>
+          <span class="cb-rating-star" data-v="2" onclick="setCbRating(2)">&#9733;</span>
+          <span class="cb-rating-star" data-v="3" onclick="setCbRating(3)">&#9733;</span>
+          <span class="cb-rating-star" data-v="4" onclick="setCbRating(4)">&#9733;</span>
+          <span class="cb-rating-star" data-v="5" onclick="setCbRating(5)">&#9733;</span>
+        </div>
+      </div>
+      <div class="cb-modal-footer">
+        <button class="cb-btn-cancel" onclick="closeLogModal()">Cancel</button>
+        <button class="cb-btn-save" onclick="submitLogEntry()">Save Entry</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="cb-toast" id="cb-toast"></div>
+
+<div class="last-updated">Last updated: 2026-04-03 &bull; <a href="#" onclick="location.reload()">Refresh</a></div>
+<footer>Built from <a href="https://restaurantdropout.substack.com" target="_blank">Restaurant Dropout</a> 2026-04-03 &middot; For personal use only</footer>
+
+<script>
+// ── WEEK DATA (regenerated each Friday) ──────────────────────────────────────
+const WEEK_RECIPES = {"day1": {"id": "week?-day1", "recipeKey": "day1", "title": "RANCH CUTLETS", "subtitle": "WITH AN HERBED SPRING VEGETABLE MEDLEY", "weekNum": "?", "weekLabel": "2026-04-03", "postUrl": "https://restaurantdropout.substack.com/p/food-that-screams-herbaceous-and-d6e", "coverImg": "https://substackcdn.com/image/fetch/w_600,h_800,c_fill,f_auto,q_auto:best,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Faa58fc92-dd61-426b-a728-4355daad0a5f_1320x1984.jpeg", "ingredients": ["WITH AN HERBED SPRING", "⅓ to ⅔ cup Buttermilk Brine (page 6) (see Note)", "1 (9-ounce) boneless skinless chicken breast, sliced", "in half lengthwise", "½ cup all-purpose flour", "Kosher salt", "1 egg", "1 cup panko breadcrumbs", "1 tablespoon plus 1 teaspoon chopped dill, divided", "1 tablespoon chopped chives", "Freshly ground black pepper to taste", "High smoke point neutral oil, for frying", "3 to 4 blanched asparagus spears, 1-inch chopped", "1 heart of baby gem lettuce, torn into bite-sized", "pieces", "¼ cup crumbled feta cheese", "6 to 7 mint leaves, hand torn", "⅓ cup chopped and blanched sugar snap peas", "½ cup seeded and chopped cucumbers (optional)", "Simple Lemon Vinaigrette to taste (page 7)", "Herbed Crème Fraîche Sauce, for serving (page 9)", "2 freshly baked Buttermilk Biscuits (optional)", "Note:", "● If opting for animal protein on day 4, reserve half of the", "Buttermilk Brine for said protein, rather than using the entire", "batch here."], "instructions": ["ETABLE MEDLEY INSTRUCTIONS", " In a small mixing bowl, combine the Buttermilk Brine and chicken breast halves. Rest for at least 30 minutes at room temperature or up to 8 hours in the refrigerator.", " Pat the chicken dry with a paper towel, then transfer it to a shallow bowl. Coat with the flour and a pinch of salt. In a separate shallow bowl, whisk the egg; in another shallow bowl, mix panko breadcrumbs, 1 tablespoon of the dill, chives, a generous pinch of salt, and pepper.", " Transfer the chicken to the egg mixture, coating both sides. Then transfer the chicken into the breadcrumb mixture, firmly pressing the breadcrumbs onto the chicken.", " In a large heavy-bottomed or cast-iron skillet, heat enough neutral oil to coat the bottom over medium-high heat — it should fill ¼ inch up the side of the pan. Line a large plate with paper towels and set aside.", " Once the oil reaches 375ºF, carefully add the chicken cutlets and cook until golden brown and crispy, about 3 to 4 minutes per side. Once the internal temperature reaches 165ºF, transfer the cutlets to the prepared plate and season with a pinch of salt. Allow the chicken to rest for 5 minutes before serving.", " Meanwhile, in a medium mixing bowl, combine asparagus, lettuce, feta, mint, the remaining teaspoon of dill, sugar snap peas, cucumber (optional), and lemon vinaigrette. Toss until coated. Taste and adjust seasoning.", " Spread a dollop of herbed crème fraîche onto each plate and top with a chicken cutlet. Plate the herbed vegetable medley next to the cutlet and garnish with pepper. Serve with warm buttermilk biscuits (optional)."]}, "day2": {"id": "week?-day2", "recipeKey": "day2", "title": "BOURSIN BUTTER SALMON", "subtitle": "WITH BUTTERMILK MASHED POTATOES", "weekNum": "?", "weekLabel": "2026-04-03", "postUrl": "https://restaurantdropout.substack.com/p/food-that-screams-herbaceous-and-d6e", "coverImg": "https://substackcdn.com/image/fetch/w_600,h_800,c_fill,f_auto,q_auto:best,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F6c592740-4821-4dc7-bea8-ba12821d0af2_1192x1788.jpeg", "ingredients": ["BOURSIN BUTTER SAL", "WITH BUTTERMILK MASH", "4 cooked Yukon Gold potatoes", "2 (4-ounce) salmon fillets", "Kosher salt", "Freshly ground black pepper", "Neutral oil", "12 to 14 blanched asparagus spears", "3 tablespoons salted butter", "¾ cup buttermilk", "¼ cup Boursin Butter, reheated* (page 8)", "Chopped chives, for garnish", "Chopped dill, for garnish", "Flaky salt (optional)", "*To Reheat the Boursin Butter, place the instructed", "amount of sauce in a microwave-safe container and", "microwave until heated through, about 30 to 45", "seconds. Transfer the mixture to a mixing bowl and", "whisk until smooth."], "instructions": ["N OTATOES INSTRUCTIONS", " Bring a medium pot of water up to a boil. Once the water begins to boil, add cooked potatoes and cook until fully heated through, 3 to 4 minutes. Drain and return them to the pot. Set aside.", " Season salmon fillets with salt and pepper. Set aside.", " Heat a medium pan over high heat and add neutral oil. Add blanched asparagus and a pinch of salt. Sauté until lightly seared on all sides, 3 to 4 minutes. Remove the asparagus from the skillet, divide and plate.", " In the same skillet, add another 1 to 2 glugs of neutral oil. Place the seasoned salmon fillets, presentation side down. Cook until golden and crisp, then flip and finish cooking to preferred doneness.", " Add butter and a couple of generous pinches of salt, then mash until smooth and creamy. Add the buttermilk and mix until smooth. Cook over medium-high heat, stirring occasionally until fully heated through. Season with additional salt to taste, if needed.", " Divide and spoon the mashed potatoes onto each plate, next to the cooked asparagus. Top with the cooked salmon, presentation side facing up. Dollop a large spoonful of Boursin Butter onto each cooked salmon fillet and garnish with chives, dill, freshly ground black pepper, and flaky salt (optional)."]}, "day3": {"id": "week?-day3", "recipeKey": "day3", "title": "GRILLED PEPPERCORN-MARINATED STEAK", "subtitle": "WITH CRÈME FRAÎCHE BAKED POTATOES", "weekNum": "?", "weekLabel": "2026-04-03", "postUrl": "https://restaurantdropout.substack.com/p/food-that-screams-herbaceous-and-d6e", "coverImg": "https://substackcdn.com/image/fetch/w_600,h_800,c_fill,f_auto,q_auto:best,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F5e4e5fba-e130-4b91-9bfb-6d18da9bebfd_1224x1836.jpeg", "ingredients": ["GRILLED PEPPERCOR", "WITH CRÈME FRAÎCHE BA", "1 (10- to 12-ounce) New York strip steak", "⅔ cup Peppercorn Marinade (page 10)", "4 cooked Yukon gold potatoes", "Extra-virgin olive oil", "Kosher salt", "14 to 16 asparagus spears", "2 tablespoons Herbed Crème Fraîche (page 9)", "Chopped chives, for garnish", "Flaky salt, for garnish", "Freshly ground black pepper, for garnish", "¼ cup Boursin Butter, for serving (page 8)", "2 freshly baked Buttermilk Biscuits (optional)"], "instructions": ["ARINATED STEAK POTATOES INSTRUCTIONS", " Place the steak in a small bowl and cover with the peppercorn marinade. Marinate for at least 30 minutes at room temperature or up to 4 hours in the refrigerator.", " Preheat the oven to 400ºF.", " Place cooked potatoes on a parchment-lined sheet tray and lightly coat in olive oil and salt. Bake for 15 minutes.", " Preheat the grill on high heat and lightly oil the grill grates.", " Lightly season the asparagus with olive oil and salt, then place on the grill.", " Pat the marinated steak down with a paper towel, removing the excess moisture, then place directly on the grill to cook for 4 to 5 minutes, or until a crust forms. Flip and continue grilling until the steak reaches your desired doneness (130ºF-135ºF for medium-rare; 140ºF-145ºF for medium; 150ºF-155ºF for medium-well). Transfer the cooked steak and asparagus to a plate and cover loosely with foil. Rest for 5 minutes.", " Remove the baked potatoes from the oven and plate. Using a sharp knife, cut two even crosscuts on the tops of the potatoes, opening them up. Place a dollop of crème fraîche in each potato and garnish with chives, flaky salt, and pepper. Serve alongside the grilled asparagus.", " Slice the steak across the grain, and plate directly next to the asparagus. Top the steak with a dollop of Boursin Butter. Serve with freshly baked buttermilk biscuits on the side (optional)."]}, "day4": {"id": "week?-day4", "recipeKey": "day4", "title": "CHARRED CABBAGE", "subtitle": "WITH HERBY BUTTER BEAN SALAD", "weekNum": "?", "weekLabel": "2026-04-03", "postUrl": "https://restaurantdropout.substack.com/p/food-that-screams-herbaceous-and-d6e", "coverImg": "https://substackcdn.com/image/fetch/w_600,h_800,c_fill,f_auto,q_auto:best,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4184b506-7278-4f4c-bffc-35a89cb128cf_1282x1923.jpeg", "ingredients": ["WITH HERBY BUTTER BEA", "⅓ cup Buttermilk Brine (page 6) (optional)", "1 (9-ounce) boneless skinless chicken breast,", "sliced in half lengthwise (optional)", "Neutral, high-smoke point oil", "½ head of cabbage, sliced into wedges", "Kosher salt", "Freshly ground black pepper", "2 tablespoons salted butter", "1 garlic clove, grated", "½ cup chicken or vegetable stock", "1 (15-ounce) can butter beans, rinsed and", "strained (about 1½ cups)", "A pinch of chopped dill, plus more for garnish", "A pinch of chopped chives", "5 to 6 mint leaves, hand torn", "3 to 4 blanched asparagus spears, 1-inch", "chopped", "⅓ cup chopped & blanched sugar snap peas", "½ cup (or remaining) seeded & chopped", "cucumber (optional)", "¼ cup crumbled feta cheese", "Simple Lemon Vinaigrette, to taste (page 7)", "3 to 4 tablespoons Herbed Crème Fraîche", "Sauce, for garnish (page 9)", "2 freshly baked Buttermilk Biscuits (optional)"], "instructions": ["LAD INSTRUCTIONS Brine the Chicken (Optional) In a small mixing bowl, combine buttermilk brine and chicken breast. Rest for at least 30 minutes at room temperature or up to 8 hours in the refrigerator.", " Heat neutral oil in a large skillet over high heat. Once the oil is hot and shimmering, add cabbage wedges. Season with salt and pepper and cook for 3 to 4 minutes, undisturbed. Flip the cabbage and continue cooking for an additional 3 to 4 minutes.", " If preparing chicken…move the cabbage wedges to the side of the skillet and add a couple glugs of neutral oil to the now-empty side of the skillet. Pat the brined chicken down with a paper towel and place directly onto the hot oil. Sear, untouched, for 2 to 3 minutes, until a golden brown crust forms. Flip the chicken and continue cooking as instructed below.", " Add butter to the skillet. Once the butter is fully melted, add grated garlic and cook just until fragrant, 10 to 15 seconds. Slowly pour in the stock and bring to a boil on high heat for 45 seconds to 1 minute. Reduce the heat to low, cover, and finish cooking for 5 to 6 minutes while you prepare the herby butter bean salad.", " In a large mixing bowl, combine butter beans, dill, chives, mint, asparagus, sugar snap peas, cucumber (optional), and feta. Add lemon vinaigrette, salt, and pepper to taste, stirring until fully combined.", " Plate the herby butter bean salad and top with charred cabbage and chicken (if preparing). Garnish with a dollop of herbed crème fraîche sauce and top with dill and black pepper. Serve with freshly baked buttermilk biscuits on the side (optional)."]}, "day5": {"id": "week?-day5", "recipeKey": "day5", "title": "LEMONY WHITE FISH", "subtitle": "WITH CRÈME FRAÎCHE BUTTER BEANS & CHARRED BABY GEMS", "weekNum": "?", "weekLabel": "2026-04-03", "postUrl": "https://restaurantdropout.substack.com/p/food-that-screams-herbaceous-and-d6e", "coverImg": "https://substackcdn.com/image/fetch/w_600,h_800,c_fill,f_auto,q_auto:best,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff19856a3-6d9b-4c38-9fa0-76713be95f7a_1202x1804.jpeg", "ingredients": ["WITH CRÈME FRAÎCHE BUTTER", "2 (4-ounce) white fish fillets, such as tilapia", "Olive oil", "Kosher salt", "½ lemon, thinly sliced, divided", "3 tablespoons cold salted butter, broken into small", "chunks", "1 to 2 pinches of chopped dill", "2 hearts of baby gem lettuce, sliced in half", "⅓ cup (or remaining) chopped and blanched sugar", "snap peas", "15-ounce can (about 1½ cups) butter beans, rinsed", "and strained", "Freshly ground black pepper", "¼ cup or remaining Herbed Crème Fraîche Sauce", "(page 9)", "Simple Lemon Vinaigrette to taste (page 7)", "Chopped chives", "⅓ cup crumbled feta cheese", "Flaky salt", "2 freshly baked Buttermilk Biscuits (optional)"], "instructions": ["S & CHARRED BABY GEMS INSTRUCTIONS", " Preheat your oven to 400ºF.", " Place the white fish fillets on a parchment-lined baking sheet and pat dry with a paper towel. Lightly coat with olive oil and a generous pinch of salt.", " Top each fillet with 3 lemon slices, followed by a few small chunks of butter. Sprinkle a pinch of chopped dill directly over the lemon slices and bake for 11 to 12 minutes.", " Heat a few glugs of olive oil in a large sauté pan over high heat. Once the oil is hot, add the baby gem lettuce, cut side facing down.", " Sear, undisturbed for 1 ½ to 2 minutes until slightly charred. Remove from the pan and plate, cut side facing up. Set aside.", " In the same skillet, add a few more glugs of oil. Add the snap peas and a pinch of salt. Once the snap peas are slightly charred, reduce the heat to low and add the butter beans, a pinch of salt and pepper, and the herbed crème fraîche sauce. Stir until well combined and cook until heated through.", " Top charred baby gem with lemon vinaigrette, chives, feta, and flaky salt and pepper. Plate alongside the crème fraîche butter beans.", " Place the baked fish directly on top of the beans, and serve with freshly baked buttermilk biscuits (optional) on the side."]}};
+
+// ── STORAGE HELPERS ──────────────────────────────────────────────────────────
+function getCookbook() { return JSON.parse(localStorage.getItem('rd-cookbook') || '[]'); }
+function putCookbook(d) { localStorage.setItem('rd-cookbook', JSON.stringify(d)); }
+function getCookLog()  { return JSON.parse(localStorage.getItem('rd-cooklog')  || '[]'); }
+function putCookLog(d) { localStorage.setItem('rd-cooklog',  JSON.stringify(d)); }
+
+// ── MISC UTILS ───────────────────────────────────────────────────────────────
+function hx(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+function showToast(msg) {
+  const t = document.getElementById('cb-toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+function todayStr() { return new Date().toISOString().slice(0,10); }
+
+// ── SAVE RECIPE TO COOKBOOK ───────────────────────────────────────────────────
+function saveRecipeToCookbook(key) {
+  const r = WEEK_RECIPES[key];
+  if (!r) return;
+  const book = getCookbook();
+  if (book.find(x => x.id === r.id)) { showToast('Already in your cookbook!'); return; }
+  book.unshift({ ...r, savedDate: todayStr(), starred: false });
+  putCookbook(book);
+  const btn = document.getElementById('save-btn-' + key);
+  if (btn) { btn.textContent = '✓ Saved'; btn.classList.add('saved'); btn.disabled = true; }
+  renderCookbook(); renderCookLog();
+  showToast('Saved to your cookbook!');
+}
+
+function toggleStar(id) {
+  const book = getCookbook();
+  const r = book.find(x => x.id === id);
+  if (r) { r.starred = !r.starred; putCookbook(book); renderCookbook(); }
+}
+
+function removeFromCookbook(id) {
+  if (!confirm('Remove this recipe from your cookbook?')) return;
+  putCookbook(getCookbook().filter(x => x.id !== id));
+  renderCookbook();
+  showToast('Removed.');
+  // Reset the Save button on the Recipes tab if this week's recipe was removed
+  Object.entries(WEEK_RECIPES).forEach(([key, r]) => {
+    if (r.id === id) {
+      const btn = document.getElementById('save-btn-' + key);
+      if (btn) { btn.textContent = '♥ Save to Cookbook'; btn.classList.remove('saved'); btn.disabled = false; }
+    }
+  });
+}
+
+function copyIngredients(id) {
+  const r = getCookbook().find(x => x.id === id);
+  if (!r) return;
+  const text = r.title + '\n\n' + r.ingredients.join('\n');
+  navigator.clipboard.writeText(text).then(() => showToast('Ingredients copied!'));
+}
+
+// ── RENDER COOKBOOK GRID ──────────────────────────────────────────────────────
+let cbFilter = 'all';
+function setCbFilter(f) {
+  cbFilter = f;
+  document.getElementById('cb-filter-all').classList.toggle('active', f === 'all');
+  document.getElementById('cb-filter-starred').classList.toggle('active', f === 'starred');
+  renderCookbook();
+}
+
+function renderCookbook() {
+  const query = (document.getElementById('cb-search')?.value || '').toLowerCase();
+  let book = getCookbook();
+  if (cbFilter === 'starred') book = book.filter(r => r.starred);
+  if (query) book = book.filter(r =>
+    r.title.toLowerCase().includes(query) ||
+    (r.weekLabel||'').toLowerCase().includes(query) ||
+    (r.subtitle||'').toLowerCase().includes(query)
+  );
+  const grid = document.getElementById('cb-grid');
+  if (!grid) return;
+  if (book.length === 0) {
+    const msg = getCookbook().length === 0
+      ? 'No saved recipes yet.<br>Hit <strong>&ldquo;&#9825; Save to Cookbook&rdquo;</strong> on any recipe you love!'
+      : 'No recipes match your search.';
+    grid.innerHTML = '<div class="cb-empty"><p>' + msg + '</p></div>';
+    return;
+  }
+  const log = getCookLog();
+  grid.innerHTML = book.map(r => {
+    const entries = log.filter(e => e.recipeId === r.id).sort((a,b)=>b.date.localeCompare(a.date));
+    const madeCount = entries.length;
+    const lastMade  = entries[0]?.date || null;
+    const ingHtml   = r.ingredients.map(i => '<li>' + hx(i) + '</li>').join('');
+    const instHtml  = r.instructions.map(s => '<li>' + hx(s) + '</li>').join('');
+    const logHtml   = entries.length === 0 ? '' : `
+      <div class="cb-log-inline">
+        <div class="cb-log-inline-hdr">
+          <h4>Cook Log</h4>
+        </div>
+        ${entries.map(e => `
+          <div class="cb-log-item">
+            <div class="cb-log-item-hdr">
+              <span class="cb-log-date">${e.date}</span>
+              ${e.rating ? '<span class="cb-log-rating">' + '&#9733;'.repeat(e.rating) + '</span>' : ''}
+              <button class="cb-log-del" onclick="deleteLogEntry('${e.id}')" title="Delete">&#10005;</button>
+            </div>
+            ${e.notes ? '<p class="cb-log-notes">' + hx(e.notes) + '</p>' : ''}
+          </div>`).join('')}
+      </div>`;
+    return `
+    <div class="cb-card${r.starred ? ' cb-starred' : ''}" id="cbcard-${r.id}">
+      <div class="cb-card-top">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div class="cb-card-meta">
+            <span class="cb-week-badge">${hx(r.weekLabel)}</span>
+            ${madeCount > 0 ? '<span class="cb-made-badge">Made ' + madeCount + '&times;</span>' : ''}
+            ${lastMade ? '<span class="cb-last-made">Last: ' + lastMade + '</span>' : ''}
+          </div>
+          <div class="cb-card-btns">
+            <button class="cb-star${r.starred ? ' on' : ''}" onclick="toggleStar('${r.id}')" title="${r.starred ? 'Unstar' : 'Star'}">&#9733;</button>
+            <button class="cb-log-btn-sm" onclick="openLogModal('${r.id}', '${hx(r.title)}')">+ Log</button>
+            <button class="cb-remove" onclick="removeFromCookbook('${r.id}')" title="Remove">&#10005;</button>
+          </div>
+        </div>
+      </div>
+      <h3 class="cb-card-title">${hx(r.title)}</h3>
+      ${r.subtitle ? '<div class="cb-card-sub">' + hx(r.subtitle) + '</div>' : ''}
+      <details class="cb-details">
+        <summary>View full recipe</summary>
+        <div class="cb-recipe-body">
+          <div>
+            <h4>Ingredients <button class="cb-copy-btn" onclick="copyIngredients('${r.id}')">Copy</button></h4>
+            <ul>${ingHtml}</ul>
+          </div>
+          <div>
+            <h4>Instructions</h4>
+            <ol>${instHtml}</ol>
+          </div>
+        </div>
+      </details>
+      ${r.postUrl ? '<a class="cb-substack-link" href="' + hx(r.postUrl) + '" target="_blank">View original on Substack &rarr;</a>' : ''}
+      ${logHtml}
+    </div>`;
+  }).join('');
+}
+
+// ── RENDER COOK LOG (standalone) ──────────────────────────────────────────────
+function renderCookLog() {
+  const all = getCookLog().sort((a,b) => b.date.localeCompare(a.date));
+  const book = getCookbook();
+  const el = document.getElementById('cb-log-list');
+  if (!el) return;
+  if (all.length === 0) {
+    el.innerHTML = '<p style="color:var(--muted);font-size:14px">No log entries yet. Use &ldquo;+ Add Entry&rdquo; to start your cook journal.</p>';
+    return;
+  }
+  el.innerHTML = all.map(e => {
+    const isManual = e.type === 'manual';
+    const recipe   = e.recipeId ? book.find(r => r.id === e.recipeId) : null;
+    const subtitle = recipe?.subtitle || '';
+    const ingr     = e.ingredients || (recipe?.ingredients || []).join('\n');
+    const inst     = e.instructions || (recipe?.instructions || []).join('\n');
+    return `
+    <div class="cb-log-entry${isManual ? ' manual' : ''}">
+      <div class="cb-log-entry-hdr">
+        <strong class="cb-entry-title">${hx(e.title)}</strong>
+        ${isManual ? '<span class="cb-manual-tag">Manual</span>' : ''}
+        <span class="cb-log-date" style="margin-left:auto">${e.date}</span>
+        ${e.rating ? '<span class="cb-log-rating">' + '&#9733;'.repeat(e.rating) + '</span>' : ''}
+        <button class="cb-log-del" onclick="deleteLogEntry('${e.id}')" title="Delete">&#10005;</button>
+      </div>
+      ${subtitle ? '<div style="font-size:13px;color:var(--muted);font-style:italic;margin-bottom:6px">' + hx(subtitle) + '</div>' : ''}
+      ${e.notes ? '<p class="cb-log-entry-notes">' + hx(e.notes) + '</p>' : ''}
+      ${ingr ? '<details style="margin-top:8px"><summary style="font-size:12px;cursor:pointer;color:var(--muted)">Ingredients</summary><pre class="cb-manual-text">' + hx(ingr) + '</pre></details>' : ''}
+      ${inst ? '<details style="margin-top:4px"><summary style="font-size:12px;cursor:pointer;color:var(--muted)">Instructions</summary><pre class="cb-manual-text">' + hx(inst) + '</pre></details>' : ''}
+    </div>`;
+  }).join('');
+}
+
+function deleteLogEntry(id) {
+  if (!confirm('Delete this log entry?')) return;
+  putCookLog(getCookLog().filter(e => e.id !== id));
+  renderCookbook(); renderCookLog();
+  showToast('Entry deleted.');
+}
+
+// ── LOG MODAL ─────────────────────────────────────────────────────────────────
+let _cbRating = 0;
+let _cbType   = 'linked';
+let _cbPreset = null; // pre-set recipeId when opened from a card
+
+function openLogModal(recipeId, recipeTitle) {
+  _cbPreset = recipeId;
+  _cbRating = 0;
+  setCbType(recipeId ? 'linked' : 'manual');
+  document.getElementById('cb-log-date').value  = todayStr();
+  document.getElementById('cb-log-notes').value = '';
+  document.getElementById('cb-manual-title').value = '';
+  document.getElementById('cb-manual-ingr').value  = '';
+  document.getElementById('cb-manual-inst').value  = '';
+  document.querySelectorAll('.cb-rating-star').forEach(s => s.classList.remove('lit'));
+  // Populate recipe dropdown
+  const sel = document.getElementById('cb-recipe-select');
+  const book = getCookbook();
+  sel.innerHTML = '<option value="">Choose a saved recipe&hellip;</option>' +
+    book.map(r => '<option value="' + hx(r.id) + '">' + hx(r.title) + ' &mdash; ' + hx(r.weekLabel) + '</option>').join('');
+  if (recipeId) sel.value = recipeId;
+  document.getElementById('cb-modal').style.display = 'flex';
+}
+
+function closeLogModal() {
+  document.getElementById('cb-modal').style.display = 'none';
+}
+
+function setCbType(t) {
+  _cbType = t;
+  document.getElementById('cb-type-linked').classList.toggle('active', t === 'linked');
+  document.getElementById('cb-type-manual').classList.toggle('active', t === 'manual');
+  document.getElementById('cb-linked-fields').style.display = t === 'linked' ? '' : 'none';
+  document.getElementById('cb-manual-fields').style.display = t === 'manual' ? '' : 'none';
+}
+
+function setCbRating(v) {
+  _cbRating = v;
+  document.querySelectorAll('.cb-rating-star').forEach(s => {
+    s.classList.toggle('lit', parseInt(s.dataset.v) <= v);
+  });
+}
+
+function submitLogEntry() {
+  const date  = document.getElementById('cb-log-date').value || todayStr();
+  const notes = document.getElementById('cb-log-notes').value.trim();
+  let entry = { id: uid(), date, notes, rating: _cbRating, type: _cbType };
+
+  if (_cbType === 'linked') {
+    const sel = document.getElementById('cb-recipe-select');
+    const id  = sel.value;
+    if (!id) { alert('Please select a recipe.'); return; }
+    const r = getCookbook().find(x => x.id === id);
+    entry.recipeId = id;
+    entry.title    = r ? r.title : sel.options[sel.selectedIndex].text;
+  } else {
+    const title = document.getElementById('cb-manual-title').value.trim();
+    if (!title) { alert('Please enter a recipe name.'); return; }
+    entry.title        = title;
+    entry.ingredients  = document.getElementById('cb-manual-ingr').value.trim();
+    entry.instructions = document.getElementById('cb-manual-inst').value.trim();
+  }
+
+  const log = getCookLog();
+  log.unshift(entry);
+  putCookLog(log);
+  closeLogModal();
+  renderCookbook(); renderCookLog();
+  showToast('Entry saved!');
+}
+
+// ── NAV / RECIPE TABS / GROCERY FILTER ───────────────────────────────────────
+document.querySelectorAll('.nav-link').forEach(l => {
+  l.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.nav-link').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(x => x.classList.remove('active'));
+    l.classList.add('active');
+    document.getElementById(l.dataset.target).classList.add('active');
+    window.scrollTo(0,0);
+  });
+});
+
+document.querySelectorAll('.recipe-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.recipe-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.recipe-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('recipe-' + tab.dataset.recipe).classList.add('active');
+  });
+});
+
+function openRecipe(day) {
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelector('[data-target="recipes"]').classList.add('active');
+  document.getElementById('recipes').classList.add('active');
+  document.querySelectorAll('.recipe-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.recipe-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector('[data-recipe="' + day + '"]').classList.add('active');
+  document.getElementById('recipe-' + day).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function getSelectedDays() {
+  const sel = [];
+  document.querySelectorAll('.filter-toggle input[type=checkbox]').forEach(cb => {
+    if (cb.checked) sel.push(parseInt(cb.dataset.filter));
+  });
+  return sel;
+}
+
+function applyFilter() {
+  const sel = getSelectedDays();
+  document.querySelectorAll('.grocery-item').forEach(item => {
+    const days = (item.dataset.days || '').split(',').map(Number);
+    item.classList.toggle('hidden', sel.length > 0 && !days.some(d => sel.includes(d)));
+  });
+  document.querySelectorAll('.grocery-category').forEach(cat => {
+    const allHidden = Array.from(cat.querySelectorAll('.grocery-item')).every(i => i.classList.contains('hidden'));
+    cat.style.display = allHidden ? 'none' : '';
+  });
+}
+
+document.querySelectorAll('.filter-toggle').forEach(toggle => {
+  toggle.addEventListener('click', () => {
+    const cb = toggle.querySelector('input[type=checkbox]');
+    cb.checked = !cb.checked;
+    toggle.classList.toggle('selected', cb.checked);
+    applyFilter();
+  });
+});
+
+function toggleAllFilters() {
+  const cbs = document.querySelectorAll('.filter-toggle input[type=checkbox]');
+  const any = Array.from(cbs).some(c => c.checked);
+  cbs.forEach(cb => { cb.checked = !any; cb.closest('.filter-toggle').classList.toggle('selected', !any); });
+  applyFilter();
+}
+
+// ── CHECKBOX PERSISTENCE ──────────────────────────────────────────────────────
+document.querySelectorAll('input[type=checkbox][id]').forEach(cb => {
+  const lbl = document.querySelector('label[for="' + cb.id + '"]');
+  const saved = localStorage.getItem('cb-' + cb.id);
+  if (saved === 'true') { cb.checked = true; if (lbl) lbl.classList.add('checked'); }
+  cb.addEventListener('change', () => {
+    if (lbl) lbl.classList.toggle('checked', cb.checked);
+    localStorage.setItem('cb-' + cb.id, cb.checked);
+  });
+});
+
+// ── MARK ALREADY-SAVED RECIPES ────────────────────────────────────────────────
+(function markSaved() {
+  const ids = new Set(getCookbook().map(r => r.id));
+  Object.entries(WEEK_RECIPES).forEach(([key, r]) => {
+    if (ids.has(r.id)) {
+      const btn = document.getElementById('save-btn-' + key);
+      if (btn) { btn.textContent = '✓ Saved'; btn.classList.add('saved'); btn.disabled = true; }
+    }
+  });
+})();
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+renderCookbook();
+renderCookLog();
+</script>
+</body>
+</html>
