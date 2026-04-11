@@ -834,7 +834,10 @@ function checkPw(){
     </div>
     <div class="sauce-grid">
       <div class="sauce-card">
-        <h3>LEMON TZATZIKI</h3>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:4px">
+          <h3 style="margin-bottom:0">LEMON TZATZIKI</h3>
+          <button class="save-cookbook-btn" id="save-btn-sauce-lemon-tzatziki" onclick="saveSauceToCookbook('sauce-lemon-tzatziki')">&#9825; Save to Cookbook</button>
+        </div>
         <div class="yield">1½ cups</div>
         <div class="sauce-two-col">
           <div><h4>Ingredients</h4><ul>
@@ -856,7 +859,10 @@ function checkPw(){
         <div class="recipe-note" style="margin-top:12px;"><strong>Note</strong>● To store, transfer to an airtight container and 1 tablespoon chopped fresh mint keep in the refrigerator for later use. 6 Restaurant Dropout • Week 108</div>
       </div>
       <div class="sauce-card">
-        <h3>HERBED BEAN SALAD</h3>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:4px">
+          <h3 style="margin-bottom:0">HERBED BEAN SALAD</h3>
+          <button class="save-cookbook-btn" id="save-btn-sauce-herbed-bean-salad" onclick="saveSauceToCookbook('sauce-herbed-bean-salad')">&#9825; Save to Cookbook</button>
+        </div>
         <div class="yield">4 cups</div>
         <div class="sauce-two-col">
           <div><h4>Ingredients</h4><ul>
@@ -883,7 +889,10 @@ function checkPw(){
         <div class="recipe-note" style="margin-top:12px;"><strong>Note</strong>● To store, transfer the bean salad to an airtight rinsed container and refrigerate. 1 (15-ounce) can butter beans, drained and rinsed 1 large shallot, finely chopped 1 cup thinly sliced sugar snap peas (3 to 4 ounces) 1 teaspoon kosher salt, plus more to taste ½ teaspoon freshly ground black pepper 7 Restaurant Dropout • Week 108</div>
       </div>
       <div class="sauce-card">
-        <h3>MEDITERRANEAN-INSPIRED MEATBALLS</h3>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:4px">
+          <h3 style="margin-bottom:0">MEDITERRANEAN-INSPIRED MEATBALLS</h3>
+          <button class="save-cookbook-btn" id="save-btn-sauce-mediterranean-inspired-meatballs" onclick="saveSauceToCookbook('sauce-mediterranean-inspired-meatballs')">&#9825; Save to Cookbook</button>
+        </div>
         <div class="yield">16 (1½ -inch) meatballs</div>
         <div class="sauce-two-col">
           <div><h4>Ingredients</h4><ul>
@@ -911,7 +920,10 @@ function checkPw(){
         <div class="recipe-note" style="margin-top:12px;"><strong>Note</strong>● To store, allow the meatballs to cool completely. Transfer to an airtight container and refrigerate for up to 4 days. 8 Restaurant Dropout • Week 108</div>
       </div>
       <div class="sauce-card">
-        <h3>PICKLED JALAPEÑOS AND SHALLOTS</h3>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:4px">
+          <h3 style="margin-bottom:0">PICKLED JALAPEÑOS AND SHALLOTS</h3>
+          <button class="save-cookbook-btn" id="save-btn-sauce-pickled-jalape-os-and-shallots" onclick="saveSauceToCookbook('sauce-pickled-jalape-os-and-shallots')">&#9825; Save to Cookbook</button>
+        </div>
         <div class="yield">1 cup</div>
         <div class="sauce-two-col">
           <div><h4>Ingredients</h4><ul>
@@ -1023,6 +1035,7 @@ function checkPw(){
 <script>
 // ── WEEK DATA (regenerated each Friday) ──────────────────────────────────────
 const WEEK_RECIPES = {};
+const WEEK_SAUCES  = {"sauce-lemon-tzatziki": {"id": "week?-sauce-lemon-tzatziki", "recipeKey": "sauce-lemon-tzatziki", "title": "LEMON TZATZIKI", "subtitle": "Sauces, Brines & Marinades", "weekNum": "?", "weekLabel": "2026-04-10", "postUrl": "https://restaurantdropout.substack.com/p/cooking-mediterranean", "ingredients": ["½ cup finely grated Persian cucumbers (from about 2 Persian cucumbers)", "1 teaspoon kosher salt, divided, plus more if needed", "1 cup full-fat Greek yogurt", "2 tablespoons olive oil", "2 garlic cloves, grated", "Zest of 1 lemon (about 1 tablespoon)", "Juice of ½ lemon (about 2 tablespoons)", "1 tablespoon chopped fresh dill", "1 tablespoon chopped fresh mint"], "instructions": [" In a small mixing bowl, stir together the grated cucumber and ½ teaspoon salt. Transfer the cucumber mixture to an absorbent paper towel, twist, and squeeze to remove the excess moisture.", " Transfer the cucumber back to the mixing bowl and add the remaining ½ teaspoon salt, Greek yogurt, olive oil, grated garlic, lemon zest, lemon juice, dill, and mint. Mix until thoroughly combined. Taste and season with more salt, as needed. Notes: ● To store, transfer to an airtight container and keep in the refrigerator for later use."]}, "sauce-herbed-bean-salad": {"id": "week?-sauce-herbed-bean-salad", "recipeKey": "sauce-herbed-bean-salad", "title": "HERBED BEAN SALAD", "subtitle": "Sauces, Brines & Marinades", "weekNum": "?", "weekLabel": "2026-04-10", "postUrl": "https://restaurantdropout.substack.com/p/cooking-mediterranean", "ingredients": ["2 tablespoons red wine vinegar", "2 garlic cloves, grated", "Zest of 1 lemon (about 1 tablespoon)", "Juice of ½ lemon (about 2 tablespoons)", "¼ cup chopped parsley", "1 tablespoon chopped fresh dill", "1 tablespoon chopped mint", "½ cup olive oil", "1 (15-ounce) can cannellini beans, drained and rinsed", "1 (15-ounce) can butter beans, drained and rinsed", "1 large shallot, finely chopped", "1 cup thinly sliced sugar snap peas (3 to 4 ounces)", "1 teaspoon kosher salt, plus more to taste", "½ teaspoon freshly ground black pepper"], "instructions": [" In a large mixing bowl, whisk together the vinegar, grated garlic, lemon zest, lemon juice, and parsley. Slowly stream in the olive oil, whisking constantly, until the mixture is emulsified.", " Add the cannellini beans, butter beans, shallots, snap peas, salt, and pepper. Use a flexible spatula to toss to combine. Cover the salad and refrigerate for at least 1 hour, or up to 1 day, to let the flavors meld. Taste and season with more salt and pepper before serving. Notes: ● To store, transfer the bean salad to an airtight container and refrigerate."]}, "sauce-mediterranean-inspired-meatballs": {"id": "week?-sauce-mediterranean-inspired-meatballs", "recipeKey": "sauce-mediterranean-inspired-meatballs", "title": "MEDITERRANEAN-INSPIRED MEATBALLS", "subtitle": "Sauces, Brines & Marinades", "weekNum": "?", "weekLabel": "2026-04-10", "postUrl": "https://restaurantdropout.substack.com/p/cooking-mediterranean", "ingredients": ["1 large egg", "1 pound ground chicken", "½ cup panko breadcrumbs", "2 garlic cloves, grated", "1½ teaspoons kosher salt", "1 teaspoon dried oregano", "1 teaspoon ground cumin", "½ teaspoon ground sumac (optional)", "½ teaspoon freshly ground black pepper", "Zest of 1 lemon (about 1 tablespoon)", "Juice of 1 lemon (about ¼ cup)", "2 tablespoons chopped parsley", "2 tablespoons chopped fresh dill", "2 tablespoons olive oil, plus more for cooking"], "instructions": [" Whisk the egg in a large mixing bowl. Add the breadcrumbs, garlic, salt, oregano, cumin, sumac (optional), pepper, lemon zest, lemon juice, parsley, and dill, stirring to combine.", " Add the chicken and, using your hands or a rubber spatula, mix thoroughly until emulsified and slightly bouncy, about 1 minute.", " Heat ¼ cup of olive oil in a medium (10-inch) oven-safe skillet over medium-high heat. Add the meatballs and cook, undisturbed, for 2 to 3 minutes, until a lightly golden brown crust forms. If the meatballs resist lifting from the pan, let them cook for 30 seconds longer — they will release naturally once properly browned. Flip and cook for 4 to 5 minutes more, until golden brown and the internal temperature reaches 165ºF. Note: ● To store, allow the meatballs to cool completely. Transfer to an airtight container and refrigerate for up to 4 days."]}, "sauce-pickled-jalape-os-and-shallots": {"id": "week?-sauce-pickled-jalape-os-and-shallots", "recipeKey": "sauce-pickled-jalape-os-and-shallots", "title": "PICKLED JALAPEÑOS AND SHALLOTS", "subtitle": "Sauces, Brines & Marinades", "weekNum": "?", "weekLabel": "2026-04-10", "postUrl": "https://restaurantdropout.substack.com/p/cooking-mediterranean", "ingredients": ["2 jalapeños, thinly sliced", "1 large shallot, thinly sliced", "¼ cup red wine vinegar", "¼ cup granulated sugar", "½ cup water", "1 teaspoon kosher salt"], "instructions": [" Place sliced jalapeños and shallots in a quart-sized deli container.", " Combine vinegar, sugar, water, and salt in a saucepan over medium-high heat. Once the liquid begins steaming, remove from the heat and pour directly over the jalapeños and shallots.", " Allow jalapeños and shallots to soften and come to room temperature before covering and storing in the refrigerator."]}};
 
 // ── STORAGE HELPERS ──────────────────────────────────────────────────────────
 function getCookbook() { return JSON.parse(localStorage.getItem('rd-cookbook') || '[]'); }
@@ -1056,6 +1069,19 @@ function saveRecipeToCookbook(key) {
   showToast('Saved to your cookbook!');
 }
 
+function saveSauceToCookbook(key) {
+  const r = WEEK_SAUCES[key];
+  if (!r) return;
+  const book = getCookbook();
+  if (book.find(x => x.id === r.id)) { showToast('Already in your cookbook!'); return; }
+  book.unshift({ ...r, savedDate: todayStr(), starred: false });
+  putCookbook(book);
+  const btn = document.getElementById('save-btn-' + key);
+  if (btn) { btn.textContent = '✓ Saved'; btn.classList.add('saved'); btn.disabled = true; }
+  renderCookbook(); renderCookLog();
+  showToast('Saved to your cookbook!');
+}
+
 function toggleStar(id) {
   const book = getCookbook();
   const r = book.find(x => x.id === id);
@@ -1067,8 +1093,8 @@ function removeFromCookbook(id) {
   putCookbook(getCookbook().filter(x => x.id !== id));
   renderCookbook();
   showToast('Removed.');
-  // Reset the Save button on the Recipes tab if this week's recipe was removed
-  Object.entries(WEEK_RECIPES).forEach(([key, r]) => {
+  // Reset the Save button on the Recipes/Sauces tab if this week's recipe was removed
+  [...Object.entries(WEEK_RECIPES), ...Object.entries(WEEK_SAUCES)].forEach(([key, r]) => {
     if (r.id === id) {
       const btn = document.getElementById('save-btn-' + key);
       if (btn) { btn.textContent = '♥ Save to Cookbook'; btn.classList.remove('saved'); btn.disabled = false; }
@@ -1363,7 +1389,7 @@ document.querySelectorAll('input[type=checkbox][id]').forEach(cb => {
 // ── MARK ALREADY-SAVED RECIPES ────────────────────────────────────────────────
 (function markSaved() {
   const ids = new Set(getCookbook().map(r => r.id));
-  Object.entries(WEEK_RECIPES).forEach(([key, r]) => {
+  [...Object.entries(WEEK_RECIPES), ...Object.entries(WEEK_SAUCES)].forEach(([key, r]) => {
     if (ids.has(r.id)) {
       const btn = document.getElementById('save-btn-' + key);
       if (btn) { btn.textContent = '✓ Saved'; btn.classList.add('saved'); btn.disabled = true; }
