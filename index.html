@@ -1157,7 +1157,10 @@ function checkPw(){
     </div>
     <div class="sauce-grid">
       <div class="sauce-card">
-        <h3>BUTTERMILK BRINE</h3>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:4px">
+          <h3 style="margin-bottom:0">BUTTERMILK BRINE</h3>
+          <button class="save-cookbook-btn" id="save-btn-sauce-brine" onclick="saveSauceToCookbook('sauce-brine')">&#9825; Save to Cookbook</button>
+        </div>
         <div class="yield">⅔ cup</div>
         <div class="sauce-two-col">
           <div><h4>Ingredients</h4><ul>
@@ -1175,7 +1178,10 @@ function checkPw(){
         <div class="recipe-note" style="margin-top:12px;"><strong>Note</strong>● To Store, transfer the brine to an air-tight 1 teaspoon kosher salt container and store in the refrigerator. ½ teaspoon granulated sugar 6 Restaurant Dropout • Week 107</div>
       </div>
       <div class="sauce-card">
-        <h3>SIMPLE LEMON VINAIGRETTE</h3>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:4px">
+          <h3 style="margin-bottom:0">SIMPLE LEMON VINAIGRETTE</h3>
+          <button class="save-cookbook-btn" id="save-btn-sauce-vinaigrette" onclick="saveSauceToCookbook('sauce-vinaigrette')">&#9825; Save to Cookbook</button>
+        </div>
         <div class="yield">½ cup</div>
         <div class="sauce-two-col">
           <div><h4>Ingredients</h4><ul>
@@ -1195,7 +1201,10 @@ function checkPw(){
         <div class="recipe-note" style="margin-top:12px;"><strong>Note</strong>● To Store, transfer the vinaigrette to an air-tight container and store in the refrigerator. 7 Restaurant Dropout • Week 107</div>
       </div>
       <div class="sauce-card">
-        <h3>BOURSIN BUTTER</h3>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:4px">
+          <h3 style="margin-bottom:0">BOURSIN BUTTER</h3>
+          <button class="save-cookbook-btn" id="save-btn-sauce-boursin" onclick="saveSauceToCookbook('sauce-boursin')">&#9825; Save to Cookbook</button>
+        </div>
         <div class="yield">½ cup</div>
         <div class="sauce-two-col">
           <div><h4>Ingredients</h4><ul>
@@ -1212,7 +1221,10 @@ function checkPw(){
         <div class="recipe-note" style="margin-top:12px;"><strong>Note</strong>● To Store, transfer the butter to an airtight container and refrigerate. ● To Reheat the Boursin Butter, place the instructed amount of sauce in a microwave-safe container and microwave until heated through, about 30 to 45 seconds. Transfer the mixture to a mixing bowl and whisk until smooth. 8 Restaurant Dropout • Week 107</div>
       </div>
       <div class="sauce-card">
-        <h3>HERBED CRÈME FRAÎCHE SAUCE</h3>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:4px">
+          <h3 style="margin-bottom:0">HERBED CRÈME FRAÎCHE SAUCE</h3>
+          <button class="save-cookbook-btn" id="save-btn-sauce-creme" onclick="saveSauceToCookbook('sauce-creme')">&#9825; Save to Cookbook</button>
+        </div>
         <div class="yield">¾ cup</div>
         <div class="sauce-two-col">
           <div><h4>Ingredients</h4><ul>
@@ -1232,7 +1244,10 @@ function checkPw(){
         <div class="recipe-note" style="margin-top:12px;"><strong>Note</strong>1 teaspoon kosher salt ● To Store, transfer the sauce to an airtight 1 teaspoon lemon juice container and refrigerate for later use. ¼ teaspoon black pepper ¼ teaspoon granulated sugar 9 Restaurant Dropout • Week 107</div>
       </div>
       <div class="sauce-card">
-        <h3>PEPPERCORN MARINADE</h3>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:4px">
+          <h3 style="margin-bottom:0">PEPPERCORN MARINADE</h3>
+          <button class="save-cookbook-btn" id="save-btn-sauce-peppercorn" onclick="saveSauceToCookbook('sauce-peppercorn')">&#9825; Save to Cookbook</button>
+        </div>
         <div class="yield">⅔ cup</div>
         <div class="sauce-two-col">
           <div><h4>Ingredients</h4><ul>
@@ -1344,6 +1359,50 @@ function checkPw(){
 // ── WEEK DATA (regenerated each Friday) ──────────────────────────────────────
 const WEEK_RECIPES = {"day1": {"id": "week?-day1", "recipeKey": "day1", "title": "RANCH CUTLETS", "subtitle": "WITH AN HERBED SPRING VEGETABLE MEDLEY", "weekNum": "?", "weekLabel": "2026-04-03", "postUrl": "https://restaurantdropout.substack.com/p/food-that-screams-herbaceous-and-d6e", "coverImg": "https://substackcdn.com/image/fetch/w_600,h_800,c_fill,f_auto,q_auto:best,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Faa58fc92-dd61-426b-a728-4355daad0a5f_1320x1984.jpeg", "ingredients": ["⅓ to ⅔ cup Buttermilk Brine (page 6) (see Note)", "1 (9-ounce) boneless skinless chicken breast, sliced in half lengthwise", "½ cup all-purpose flour", "Kosher salt", "1 egg", "1 cup panko breadcrumbs", "1 tablespoon plus 1 teaspoon chopped dill, divided", "1 tablespoon chopped chives", "Freshly ground black pepper to taste", "High smoke point neutral oil, for frying", "3 to 4 blanched asparagus spears, 1-inch chopped", "1 heart of baby gem lettuce, torn into bite-sized pieces", "¼ cup crumbled feta cheese", "6 to 7 mint leaves, hand torn", "⅓ cup chopped and blanched sugar snap peas", "½ cup seeded and chopped cucumbers (optional)", "Simple Lemon Vinaigrette to taste (page 7)", "Herbed Crème Fraîche Sauce, for serving (page 9)", "2 freshly baked Buttermilk Biscuits (optional)"], "instructions": [" In a small mixing bowl, combine the Buttermilk Brine and chicken breast halves. Rest for at least 30 minutes at room temperature or up to 8 hours in the refrigerator.", " Pat the chicken dry with a paper towel, then transfer it to a shallow bowl. Coat with the flour and a pinch of salt. In a separate shallow bowl, whisk the egg; in another shallow bowl, mix panko breadcrumbs, 1 tablespoon of the dill, chives, a generous pinch of salt, and pepper.", " Transfer the chicken to the egg mixture, coating both sides. Then transfer the chicken into the breadcrumb mixture, firmly pressing the breadcrumbs onto the chicken.", " In a large heavy-bottomed or cast-iron skillet, heat enough neutral oil to coat the bottom over medium-high heat — it should fill ¼ inch up the side of the pan. Line a large plate with paper towels and set aside.", " Once the oil reaches 375ºF, carefully add the chicken cutlets and cook until golden brown and crispy, about 3 to 4 minutes per side. Once the internal temperature reaches 165ºF, transfer the cutlets to the prepared plate and season with a pinch of salt. Allow the chicken to rest for 5 minutes before serving.", " Meanwhile, in a medium mixing bowl, combine asparagus, lettuce, feta, mint, the remaining teaspoon of dill, sugar snap peas, cucumber (optional), and lemon vinaigrette. Toss until coated. Taste and adjust seasoning.", " Spread a dollop of herbed crème fraîche onto each plate and top with a chicken cutlet. Plate the herbed vegetable medley next to the cutlet and garnish with pepper. Serve with warm buttermilk biscuits (optional)."]}, "day2": {"id": "week?-day2", "recipeKey": "day2", "title": "BOURSIN BUTTER SALMON", "subtitle": "WITH BUTTERMILK MASHED POTATOES", "weekNum": "?", "weekLabel": "2026-04-03", "postUrl": "https://restaurantdropout.substack.com/p/food-that-screams-herbaceous-and-d6e", "coverImg": "https://substackcdn.com/image/fetch/w_600,h_800,c_fill,f_auto,q_auto:best,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F6c592740-4821-4dc7-bea8-ba12821d0af2_1192x1788.jpeg", "ingredients": ["4 cooked Yukon Gold potatoes", "2 (4-ounce) salmon fillets", "Kosher salt", "Freshly ground black pepper", "Neutral oil", "12 to 14 blanched asparagus spears", "3 tablespoons salted butter", "¾ cup buttermilk", "¼ cup Boursin Butter, reheated* (page 8)", "Chopped chives, for garnish", "Chopped dill, for garnish", "Flaky salt (optional)", "*To Reheat the Boursin Butter, place the instructed amount of sauce in a microwave-safe container and microwave until heated through, about 30 to 45 seconds. Transfer the mixture to a mixing bowl and whisk until smooth."], "instructions": [" Bring a medium pot of water up to a boil. Once the water begins to boil, add cooked potatoes and cook until fully heated through, 3 to 4 minutes. Drain and return them to the pot. Set aside.", " Season salmon fillets with salt and pepper. Set aside.", " Heat a medium pan over high heat and add neutral oil. Add blanched asparagus and a pinch of salt. Sauté until lightly seared on all sides, 3 to 4 minutes. Remove the asparagus from the skillet, divide and plate.", " In the same skillet, add another 1 to 2 glugs of neutral oil. Place the seasoned salmon fillets, presentation side down. Cook until golden and crisp, then flip and finish cooking to preferred doneness.", " Add butter and a couple of generous pinches of salt, then mash until smooth and creamy. Add the buttermilk and mix until smooth. Cook over medium-high heat, stirring occasionally until fully heated through. Season with additional salt to taste, if needed.", " Divide and spoon the mashed potatoes onto each plate, next to the cooked asparagus. Top with the cooked salmon, presentation side facing up. Dollop a large spoonful of Boursin Butter onto each cooked salmon fillet and garnish with chives, dill, freshly ground black pepper, and flaky salt (optional)."]}, "day3": {"id": "week?-day3", "recipeKey": "day3", "title": "GRILLED PEPPERCORN-MARINATED STEAK", "subtitle": "WITH CRÈME FRAÎCHE BAKED POTATOES", "weekNum": "?", "weekLabel": "2026-04-03", "postUrl": "https://restaurantdropout.substack.com/p/food-that-screams-herbaceous-and-d6e", "coverImg": "https://substackcdn.com/image/fetch/w_600,h_800,c_fill,f_auto,q_auto:best,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F5e4e5fba-e130-4b91-9bfb-6d18da9bebfd_1224x1836.jpeg", "ingredients": ["1 (10- to 12-ounce) New York strip steak", "⅔ cup Peppercorn Marinade (page 10)", "4 cooked Yukon gold potatoes", "Extra-virgin olive oil", "Kosher salt", "14 to 16 asparagus spears", "2 tablespoons Herbed Crème Fraîche (page 9)", "Chopped chives, for garnish", "Flaky salt, for garnish", "Freshly ground black pepper, for garnish", "¼ cup Boursin Butter, for serving (page 8)", "2 freshly baked Buttermilk Biscuits (optional)"], "instructions": [" Place the steak in a small bowl and cover with the peppercorn marinade. Marinate for at least 30 minutes at room temperature or up to 4 hours in the refrigerator.", " Preheat the oven to 400ºF.", " Place cooked potatoes on a parchment-lined sheet tray and lightly coat in olive oil and salt. Bake for 15 minutes.", " Preheat the grill on high heat and lightly oil the grill grates.", " Lightly season the asparagus with olive oil and salt, then place on the grill.", " Pat the marinated steak down with a paper towel, removing the excess moisture, then place directly on the grill to cook for 4 to 5 minutes, or until a crust forms. Flip and continue grilling until the steak reaches your desired doneness (130ºF-135ºF for medium-rare; 140ºF-145ºF for medium; 150ºF-155ºF for medium-well). Transfer the cooked steak and asparagus to a plate and cover loosely with foil. Rest for 5 minutes.", " Remove the baked potatoes from the oven and plate. Using a sharp knife, cut two even crosscuts on the tops of the potatoes, opening them up. Place a dollop of crème fraîche in each potato and garnish with chives, flaky salt, and pepper. Serve alongside the grilled asparagus.", " Slice the steak across the grain, and plate directly next to the asparagus. Top the steak with a dollop of Boursin Butter. Serve with freshly baked buttermilk biscuits on the side (optional)."]}, "day4": {"id": "week?-day4", "recipeKey": "day4", "title": "CHARRED CABBAGE", "subtitle": "WITH HERBY BUTTER BEAN SALAD", "weekNum": "?", "weekLabel": "2026-04-03", "postUrl": "https://restaurantdropout.substack.com/p/food-that-screams-herbaceous-and-d6e", "coverImg": "https://substackcdn.com/image/fetch/w_600,h_800,c_fill,f_auto,q_auto:best,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4184b506-7278-4f4c-bffc-35a89cb128cf_1282x1923.jpeg", "ingredients": ["⅓ cup Buttermilk Brine (page 6) (optional)", "1 (9-ounce) boneless skinless chicken breast, sliced in half lengthwise (optional)", "Neutral, high-smoke point oil", "½ head of cabbage, sliced into wedges", "Kosher salt", "Freshly ground black pepper", "2 tablespoons salted butter", "1 garlic clove, grated", "½ cup chicken or vegetable stock", "1 (15-ounce) can butter beans, rinsed and strained (about 1½ cups)", "A pinch of chopped dill, plus more for garnish", "A pinch of chopped chives", "5 to 6 mint leaves, hand torn", "3 to 4 blanched asparagus spears, 1-inch chopped", "⅓ cup chopped & blanched sugar snap peas", "½ cup (or remaining) seeded & chopped cucumber (optional)", "¼ cup crumbled feta cheese", "Simple Lemon Vinaigrette, to taste (page 7)", "3 to 4 tablespoons Herbed Crème Fraîche", "Sauce, for garnish (page 9)", "2 freshly baked Buttermilk Biscuits (optional)"], "instructions": [" Heat neutral oil in a large skillet over high heat. Once the oil is hot and shimmering, add cabbage wedges. Season with salt and pepper and cook for 3 to 4 minutes, undisturbed. Flip the cabbage and continue cooking for an additional 3 to 4 minutes.", " If preparing chicken…move the cabbage wedges to the side of the skillet and add a couple glugs of neutral oil to the now-empty side of the skillet. Pat the brined chicken down with a paper towel and place directly onto the hot oil. Sear, untouched, for 2 to 3 minutes, until a golden brown crust forms. Flip the chicken and continue cooking as instructed below.", " Add butter to the skillet. Once the butter is fully melted, add grated garlic and cook just until fragrant, 10 to 15 seconds. Slowly pour in the stock and bring to a boil on high heat for 45 seconds to 1 minute. Reduce the heat to low, cover, and finish cooking for 5 to 6 minutes while you prepare the herby butter bean salad.", " In a large mixing bowl, combine butter beans, dill, chives, mint, asparagus, sugar snap peas, cucumber (optional), and feta. Add lemon vinaigrette, salt, and pepper to taste, stirring until fully combined.", " Plate the herby butter bean salad and top with charred cabbage and chicken (if preparing). Garnish with a dollop of herbed crème fraîche sauce and top with dill and black pepper. Serve with freshly baked buttermilk biscuits on the side (optional)."]}, "day5": {"id": "week?-day5", "recipeKey": "day5", "title": "LEMONY WHITE FISH", "subtitle": "WITH CRÈME FRAÎCHE BUTTER BEANS & CHARRED BABY GEMS", "weekNum": "?", "weekLabel": "2026-04-03", "postUrl": "https://restaurantdropout.substack.com/p/food-that-screams-herbaceous-and-d6e", "coverImg": "https://substackcdn.com/image/fetch/w_600,h_800,c_fill,f_auto,q_auto:best,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff19856a3-6d9b-4c38-9fa0-76713be95f7a_1202x1804.jpeg", "ingredients": ["2 (4-ounce) white fish fillets, such as tilapia", "Olive oil", "Kosher salt", "½ lemon, thinly sliced, divided", "3 tablespoons cold salted butter, broken into small chunks", "1 to 2 pinches of chopped dill", "2 hearts of baby gem lettuce, sliced in half", "⅓ cup (or remaining) chopped and blanched sugar snap peas", "15-ounce can (about 1½ cups) butter beans, rinsed and strained", "Freshly ground black pepper", "¼ cup or remaining Herbed Crème Fraîche Sauce (page 9)", "Simple Lemon Vinaigrette to taste (page 7)", "Chopped chives", "⅓ cup crumbled feta cheese", "Flaky salt", "2 freshly baked Buttermilk Biscuits (optional)"], "instructions": [" Preheat your oven to 400ºF.", " Place the white fish fillets on a parchment-lined baking sheet and pat dry with a paper towel. Lightly coat with olive oil and a generous pinch of salt.", " Top each fillet with 3 lemon slices, followed by a few small chunks of butter. Sprinkle a pinch of chopped dill directly over the lemon slices and bake for 11 to 12 minutes.", " Heat a few glugs of olive oil in a large sauté pan over high heat. Once the oil is hot, add the baby gem lettuce, cut side facing down.", " Sear, undisturbed for 1 ½ to 2 minutes until slightly charred. Remove from the pan and plate, cut side facing up. Set aside.", " In the same skillet, add a few more glugs of oil. Add the snap peas and a pinch of salt. Once the snap peas are slightly charred, reduce the heat to low and add the butter beans, a pinch of salt and pepper, and the herbed crème fraîche sauce. Stir until well combined and cook until heated through.", " Top charred baby gem with lemon vinaigrette, chives, feta, and flaky salt and pepper. Plate alongside the crème fraîche butter beans.", " Place the baked fish directly on top of the beans, and serve with freshly baked buttermilk biscuits (optional) on the side."]}};
 
+// ── SAUCE DATA ───────────────────────────────────────────────────────────────
+const WEEK_SAUCES = {
+  "sauce-brine": {
+    "id": "week?-sauce-brine", "recipeKey": "sauce-brine",
+    "title": "BUTTERMILK BRINE", "subtitle": "Sauces, Brines & Marinades",
+    "weekNum": "?", "weekLabel": "2026-04-03",
+    "postUrl": "https://restaurantdropout.substack.com/p/food-that-screams-herbaceous-and-d6e",
+    "ingredients": ["½ cup buttermilk","1 garlic clove","1 tablespoon chopped dill","1 tablespoon chopped chives","1 teaspoon kosher salt","½ teaspoon granulated sugar"],
+    "instructions": ["Add all ingredients to a blender or food processor and blend until fully combined.","To Store: transfer the brine to an air-tight container and store in the refrigerator."]
+  },
+  "sauce-vinaigrette": {
+    "id": "week?-sauce-vinaigrette", "recipeKey": "sauce-vinaigrette",
+    "title": "SIMPLE LEMON VINAIGRETTE", "subtitle": "Sauces, Brines & Marinades",
+    "weekNum": "?", "weekLabel": "2026-04-03",
+    "postUrl": "https://restaurantdropout.substack.com/p/food-that-screams-herbaceous-and-d6e",
+    "ingredients": ["½ cup (100g) extra-virgin olive oil","1 garlic clove (5g)","Juice of 1 lemon (50g)","1½ tablespoons (24g) honey","1 tablespoon (14g) white wine vinegar","1 teaspoon (7g) Dijon mustard","½ teaspoon (3g) kosher salt"],
+    "instructions": ["Place olive oil and garlic in a microwave-safe container and microwave for 15 to 20 seconds until the garlic is slightly soft and fragrant.","Transfer the olive oil and garlic to a blender with the remaining ingredients and blend until fully combined.","To Store: transfer the vinaigrette to an air-tight container and store in the refrigerator."]
+  },
+  "sauce-boursin": {
+    "id": "week?-sauce-boursin", "recipeKey": "sauce-boursin",
+    "title": "BOURSIN BUTTER", "subtitle": "Sauces, Brines & Marinades",
+    "weekNum": "?", "weekLabel": "2026-04-03",
+    "postUrl": "https://restaurantdropout.substack.com/p/food-that-screams-herbaceous-and-d6e",
+    "ingredients": ["1 block of Garlic & Chives Boursin cheese","5 tablespoons unsalted butter","1 garlic clove, grated"],
+    "instructions": ["Crumble the Boursin into a small mixing bowl and set aside.","In a small saucepan, heat butter until melted. Add garlic and cook until fragrant, 15 to 20 seconds.","Pour the garlic butter directly over the boursin cheese and whisk until smooth and fully combined.","To Store: transfer the butter to an airtight container and refrigerate. To Reheat: microwave until heated through, about 30–45 seconds, then whisk until smooth."]
+  },
+  "sauce-creme": {
+    "id": "week?-sauce-creme", "recipeKey": "sauce-creme",
+    "title": "HERBED CRÈME FRAÎCHE SAUCE", "subtitle": "Sauces, Brines & Marinades",
+    "weekNum": "?", "weekLabel": "2026-04-03",
+    "postUrl": "https://restaurantdropout.substack.com/p/food-that-screams-herbaceous-and-d6e",
+    "ingredients": ["½ cup crème fraîche","¼ cup buttermilk","2 tablespoons chopped chives","1 tablespoon chopped dill","1 teaspoon kosher salt","1 teaspoon lemon juice","¼ teaspoon black pepper","¼ teaspoon granulated sugar"],
+    "instructions": ["Place all ingredients in a small mixing bowl and whisk until well combined.","To Store: transfer the sauce to an airtight container and refrigerate for later use."]
+  },
+  "sauce-peppercorn": {
+    "id": "week?-sauce-peppercorn", "recipeKey": "sauce-peppercorn",
+    "title": "PEPPERCORN MARINADE", "subtitle": "Sauces, Brines & Marinades",
+    "weekNum": "?", "weekLabel": "2026-04-03",
+    "postUrl": "https://restaurantdropout.substack.com/p/food-that-screams-herbaceous-and-d6e",
+    "ingredients": ["2 tablespoons black peppercorns","½ cup extra-virgin olive oil","2 tablespoons white wine vinegar","1½ tablespoons Dijon mustard","1½ teaspoons kosher salt","½ teaspoon granulated sugar"],
+    "instructions": ["Place black peppercorns in a large plastic bag and crush them with a rolling pin or the bottom of a heavy skillet.","Transfer the crushed black peppercorns to a mixing bowl with the remaining ingredients. Whisk until well combined.","To Store: transfer the marinade to an airtight container and refrigerate."]
+  }
+};
+
 // ── STORAGE HELPERS ──────────────────────────────────────────────────────────
 function getCookbook() { return JSON.parse(localStorage.getItem('rd-cookbook') || '[]'); }
 function putCookbook(d) { localStorage.setItem('rd-cookbook', JSON.stringify(d)); }
@@ -1376,6 +1435,19 @@ function saveRecipeToCookbook(key) {
   showToast('Saved to your cookbook!');
 }
 
+function saveSauceToCookbook(key) {
+  const r = WEEK_SAUCES[key];
+  if (!r) return;
+  const book = getCookbook();
+  if (book.find(x => x.id === r.id)) { showToast('Already in your cookbook!'); return; }
+  book.unshift({ ...r, savedDate: todayStr(), starred: false });
+  putCookbook(book);
+  const btn = document.getElementById('save-btn-' + key);
+  if (btn) { btn.textContent = '✓ Saved'; btn.classList.add('saved'); btn.disabled = true; }
+  renderCookbook(); renderCookLog();
+  showToast('Saved to your cookbook!');
+}
+
 function toggleStar(id) {
   const book = getCookbook();
   const r = book.find(x => x.id === id);
@@ -1387,8 +1459,8 @@ function removeFromCookbook(id) {
   putCookbook(getCookbook().filter(x => x.id !== id));
   renderCookbook();
   showToast('Removed.');
-  // Reset the Save button on the Recipes tab if this week's recipe was removed
-  Object.entries(WEEK_RECIPES).forEach(([key, r]) => {
+  // Reset the Save button on the Recipes/Sauces tab if this week's recipe was removed
+  [...Object.entries(WEEK_RECIPES), ...Object.entries(WEEK_SAUCES)].forEach(([key, r]) => {
     if (r.id === id) {
       const btn = document.getElementById('save-btn-' + key);
       if (btn) { btn.textContent = '♥ Save to Cookbook'; btn.classList.remove('saved'); btn.disabled = false; }
@@ -1683,7 +1755,7 @@ document.querySelectorAll('input[type=checkbox][id]').forEach(cb => {
 // ── MARK ALREADY-SAVED RECIPES ────────────────────────────────────────────────
 (function markSaved() {
   const ids = new Set(getCookbook().map(r => r.id));
-  Object.entries(WEEK_RECIPES).forEach(([key, r]) => {
+  [...Object.entries(WEEK_RECIPES), ...Object.entries(WEEK_SAUCES)].forEach(([key, r]) => {
     if (ids.has(r.id)) {
       const btn = document.getElementById('save-btn-' + key);
       if (btn) { btn.textContent = '✓ Saved'; btn.classList.add('saved'); btn.disabled = true; }
